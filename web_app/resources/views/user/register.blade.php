@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>Register an account | {{ config('app.name', 'GreenTech') }}</title>
+    <title>Register an account | {{ config('app.name', 'SynWavEco') }}</title>
 
     <link rel="stylesheet" href="{{ asset('public/assets/vendor/font-awesome/css/all.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('public/assets/icons/cartzilla-icons.min.css') }}" />
@@ -23,20 +23,20 @@
                 <div class="auth-regis-welcome">
                     <div class="welcome-overlay"></div>
                     <div class="welcome-content">
-                        <h1>Welcome to GreenTech</h1>
-                        <p class="welcome-motto">Smart Agriculture, Fueling Markets!</p>
+                        <h1>Welcome to SynWavEco</h1>
+                        <p class="welcome-motto"> Beyond Connectivity: Elevating Smart-Life Experiences and Integrity</p>
                     </div>
                 </div>
 
                 <!-- Phần bên phải - Form Đăng ký -->
                 <div class="auth-form-section">
-                    <!-- Header: Logo + GreenTech bên trái, Login bên phải -->
+                    <!-- Header: Logo + SynWavEco bên trái, Login bên phải -->
                     <div class="auth-form-header">
                         <a href="{{ route('frontend.home') }}" class="navbar-brand">
                             <span class="d-flex flex-shrink-0 text-primary me-2 auth-logo-greentech">
-                                <img src="{{ asset('public/images/greentech-logo.jpg') }}" alt="Logo" />
+                                <img src="{{ asset('public/images/synwaveco-logo.jpg') }}" alt="Logo" />
                             </span>
-                            <span class="greentech-title-header">GreenTech</span>
+                            <span class="greentech-title-header">SynWavEco</span>
                         </a>
                         
                         <a href="{{ route('user.login') }}" class="register-link">
@@ -235,7 +235,7 @@
 
                     <!-- Footer -->
                     <p class="auth-copyright-text fs-xs mb-0 mt-4 text-center">
-                        Copyright &copy; by <a href="#">{{ config('app.name', 'GreenTech') }}</a>. Sign In. Privacy policy
+                        Copyright &copy; by <a href="#">{{ config('app.name', 'SynWavEco') }}</a>. Sign In. Privacy policy
                     </p>
                 </div>
             </div>

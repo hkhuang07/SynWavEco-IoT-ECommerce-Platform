@@ -9,7 +9,7 @@
             <div class="auth-regis-welcome">
                 <div class="welcome-overlay"></div>
                 <div class="welcome-content">
-                    <h1>Welcome to GreenTech</h1>
+                    <h1>Welcome to SynWavEco</h1>
                     <p class="welcome-motto">{{ 'Smart Agriculture, Fueling Markets!' }}</p>
                 </div>
             </div>
@@ -24,9 +24,9 @@
                 <header class="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
                     <a href="{{ route('frontend.home') }}" class="navbar-brand pt-0 d-flex align-items-center">
                         <span class="d-flex flex-shrink-0 text-primary me-2 auth-logo-greentech">
-                            <img src="{{ asset('public/images/greentech-logo.jpg') }}" alt="{{ config('app.name', 'GreenTech') }} Logo" />
+                            <img src="{{ asset('public/images/greentech-logo.jpg') }}" alt="{{ config('app.name', 'SynWavEco') }} Logo" />
                         </span>
-                        <span class="fw-bold fs-5">{{ config('app.name', 'GreenTech') }}</span>
+                        <span class="fw-bold fs-5">{{ config('app.name', 'SynWavEco') }}</span>
                     </a>
                 </header>
 
@@ -200,7 +200,7 @@
 
                 <!-- Footer -->
                 <p class="fs-xs mb-0 mt-4">
-                    Copyright &copy; by <a class="auth-link" href="#" target="_blank">{{ config('app.name', 'GreenTech') }}</a>.
+                    Copyright &copy; by <a class="auth-link" href="#" target="_blank">{{ config('app.name', 'SynWavEco') }}</a>.
                 </p>
             </div>
         </div>

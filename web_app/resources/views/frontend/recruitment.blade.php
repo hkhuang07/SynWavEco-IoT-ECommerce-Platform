@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container py-4 py-lg-5">
-    <h1 class="h2 text-center mb-4">Join the GreenTech Team!</h1>
+    <h1 class="h2 text-center mb-4">Join the SynWavEco Team!</h1>
     <p class="lead text-center text-muted mb-5">
         We are constantly looking for talented and passionate individuals to help us build the future of IoT agriculture.
     </p>

@@ -5,12 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'GreenTech') }}</title>
+    <title>{{ config('app.name', 'SynWavEco') }}</title>
 
     <link rel="preload" href="{{ asset('public/images/favicon.ico') }}" as="image" type="image/x-icon">
     <link rel="icon" type="image/x-icon" href="{{ asset('public/images/favicon.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('public/images/favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ asset('public/images/favicon.ico') }}">
+
+    <link rel="icon" type="image/jpg" href="{{ asset('public/images/synwaveco-logo') }}" sizes="32x32" />
+    <link rel="apple-touch-icon" href="{{ asset('public/images/synwaveco-logo') }}" />
+    <link rel="preload" href="{{ asset('public/images/favicon.ico') }}" as="image" type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="{{ asset('public/images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('public/images/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('public/images/favicon.ico') }}">
+
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ asset('public/css/layout.css') }}" />
@@ -27,7 +35,7 @@
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h5>
-                <i class="fas fa-microchip"></i> {{ config('app.name', 'GreenTech') }}
+                <i class="fas fa-microchip"></i> {{ config('app.name', 'SynWavEco') }}
                 <button class="sidebar-close" id="sidebarClose">
                     <i class="fas fa-times"></i>
                 </button>
@@ -199,7 +207,7 @@
 
             <a class="navbar-brand" href="{{ route('administrator.home') }}">
                 <i class="fas fa-microchip"></i>
-                <span class="brand-text">{{ config('app.name', 'GreenTech') }}</span>
+                <span class="brand-text">{{ config('app.name', 'SynWavEco') }}</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
@@ -300,10 +308,10 @@
             <div class="container py-5">
                 <div class="footer-service-intro p-4 mb-5 rounded">
                     <h2 class="mb-4">
-                        <i class="fas fa-seedling me-2"></i>{{ config('app.name', 'GreenTech') }}: Smart IoT Solutions for Agriculture
+                        <i class="fas fa-seedling me-2"></i>{{ config('app.name', 'SynWavEco') }}: Smart IoT Solutions for Agriculture
                     </h2>
                     <p class="lead">
-                        {{ config('app.name', 'GreenTech') }} is an integrated IoT ecosystem for modern agriculture.
+                        {{ config('app.name', 'SynWavEco') }} is an integrated IoT ecosystem for modern agriculture.
                         Our platform features key functionalities like
                         <span class="highlight">Smart Sensors</span>,
                         <span class="highlight">Real-time Monitoring</span>,
@@ -324,7 +332,7 @@
                                     <i class="fas fa-question-circle me-2"></i>Help Center
                                 </a>
                                 <a href="#" class="footer-link-item">
-                                    <i class="fas fa-blog me-2"></i>GreenTech Blog
+                                    <i class="fas fa-blog me-2"></i>SynWavEco Blog
                                 </a>
                                 <a href="#" class="footer-link-item">
                                     <i class="fas fa-shopping-cart me-2"></i>How To Buy
@@ -351,7 +359,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-column p-4 h-100 rounded">
                             <h3 class="mb-4">
-                                <i class="fas fa-info-circle me-2"></i>About {{ config('app.name', 'GreenTech') }}
+                                <i class="fas fa-info-circle me-2"></i>About {{ config('app.name', 'SynWavEco') }}
                             </h3>
                             <div class="d-flex flex-column gap-1 mb-4">
                                 <a href="#" class="footer-link-item">
@@ -462,8 +470,8 @@
                     </div>
 
                     <div class="footer-company-info">
-                        <p class="mb-2">&copy; {{ date('Y') }} {{ config('app.name', 'GreenTech') }} by Huynh Quoc Huy. All rights reserved.</p>
-                        <p class="mb-2">{{ config('app.name', 'GreenTech') }} Technology Company Limited</p>
+                        <p class="mb-2">&copy; {{ date('Y') }} {{ config('app.name', 'SynWavEco') }} by Huynh Quoc Huy. All rights reserved.</p>
+                        <p class="mb-2">{{ config('app.name', 'SynWavEco') }} Technology Company Limited</p>
                         <p class="mb-0">
                             Address: <span class="footer-highlight">Long Xuyen City, An Giang, VietNam</span> |
                             Tax Code: <span class="footer-highlight">8825719470</span> |

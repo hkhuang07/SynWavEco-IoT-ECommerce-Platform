@@ -196,8 +196,8 @@
 
 /* Logo và tiêu đề GreenTech cạnh logo */
 .auth-logo-greentech img {
-    width: 38px;
-    height: 38px;
+    width: 100px;
+    height: 100px;
     border-radius: 8px;
     border: 2px solid var(--auth-primary);
     box-shadow: 0 2px 8px rgba(0, 255, 127, 0.3);

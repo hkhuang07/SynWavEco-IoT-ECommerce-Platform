@@ -7,10 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>@yield('title', 'Home Page') - {{ config('app.name', 'GreenTech') }}</title>
+    <title>@yield('title', 'Home Page') - {{ config('app.name', 'SynWavEco') }}</title>
 
-    <link rel="icon" type="image/jpg" href="{{ asset('public/images/greentech-logo') }}" sizes="32x32" />
-    <link rel="apple-touch-icon" href="{{ asset('public/images/greentech-logo') }}" />
+    <link rel="preload" href="{{ asset('public/images/favicon.ico') }}" as="image" type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="{{ asset('public/images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('public/images/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('public/images/favicon.ico') }}">
+    
+    <link rel="icon" type="image/jpg" href="{{ asset('public/images/synwaveco-logo') }}" sizes="32x32" />
+    <link rel="apple-touch-icon" href="{{ asset('public/images/synwaveco-logo') }}" />
     <link rel="preload" href="{{ asset('public/images/favicon.ico') }}" as="image" type="image/x-icon">
     <link rel="icon" type="image/x-icon" href="{{ asset('public/images/favicon.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('public/images/favicon.ico') }}">
@@ -138,17 +143,17 @@
             </button>
             <a class="navbar-brand py-1 py-md-2 py-xl-1 d-flex align-items-center" href="{{ route('frontend.home') }}">
                 <span class="d-none d-sm-flex flex-shrink-0 text-primary me-2">
-                    <img src="{{ asset('public/images/greentech-logo.jpg') }}"
-                        alt="{{ config('app.name', 'GreenTech') }} Logo"
+                    <img src="{{ asset('public/images/synwaveco-logo.jpg') }}"
+                        alt="{{ config('app.name', 'SynWavEco') }} Logo"
                         loading="lazy"
                         style="width: 36px; height: 36px; object-fit: contain;">
                 </span>
-                <span class="fw-bold brand-text">{{ config('app.name', 'GreenTech') }}</span>
+                <span class="fw-bold brand-text">{{ config('app.name', 'SynWavEco') }}</span>
             </a>
 
             <nav class="offcanvas offcanvas-start" id="navbarNav" tabindex="-1">
                 <div class="offcanvas-header py-3">
-                    <h5 class="offcanvas-title" id="navbarNavLabel">{{ config('app.name', 'GreenTech') }}</h5>
+                    <h5 class="offcanvas-title" id="navbarNavLabel">{{ config('app.name', 'SynWavEco') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
                 </div>
                 <div class="offcanvas-body pt-3 pb-4 py-lg-0 mx-lg-auto">
@@ -381,7 +386,7 @@
                     </ul>
                     <div class="vr text-body-secondary opacity-25 mx-4 d-none d-md-inline-block order-md-2"></div>
                     <p class="fs-xs text-center text-lg-start mb-0 order-md-1">
-                        Copyright &copy; by <span class="animate-underline"><a class="animate-target text-dark-emphasis text-decoration-none" href="#" target="_blank">{{ config('app.name', 'GreenTech') }}</a></span>.
+                        Copyright &copy; by <span class="animate-underline"><a class="animate-target text-dark-emphasis text-decoration-none" href="#" target="_blank">{{ config('app.name', 'SynWavEco') }}</a></span>.
                     </p>
                 </div>
             </div>

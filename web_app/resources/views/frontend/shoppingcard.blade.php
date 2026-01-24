@@ -5,7 +5,7 @@
     <nav class="container pt-3 my-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('frontend.home') }}">Home Page</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('frontend.products') }}">Products</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('frontend.products_categories') }}">Products</a></li>
             <li class="breadcrumb-item active">Shopping Cart</li>
         </ol>
     </nav>
