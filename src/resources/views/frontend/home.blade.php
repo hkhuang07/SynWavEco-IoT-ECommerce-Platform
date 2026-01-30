@@ -86,7 +86,7 @@
             <div class="d-flex flex-nowrap align-items-center" style="min-width: max-content;">
                 @foreach($manufactures as $value )
                 <div style="width: 160px; flex-shrink: 0;">
-                    <a class="d-flex justify-content-center py-3 px-2 px-xl-3" href="{{ route('frontend.products.product_manufacturer_details', ['manufacturer_slug' => $product->manufacturer->slug, 'productname_slug' => $product->slug]) }}">
+                    <a class="d-flex justify-content-center py-3 px-2 px-xl-3" href="{{ route('frontend.products.manufacturers', ['manufacturer_slug' => $value->slug]) }}">
                         <img src="{{ asset('storage/app/private/'.$value->logo)}}" class="d-block d-none-dark" alt="{{ $value->name }}" style="max-height: 40px;" />
                         <img src="{{ asset('storage/app/private/'.$value->logo) }}" class="d-none d-block-dark" alt="{{ $value->name }}" style="max-height: 40px;" />
                     </a>

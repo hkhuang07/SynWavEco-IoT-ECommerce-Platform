@@ -9,13 +9,14 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('frontend.home') }}">Home</a></li>
             <li class="breadcrumb-item">
-                <a href="{{ route('frontend.products.manufacturers', ['categoryname_slug' => $category->slug]) }}">
-                    {{ $category->name }}
+                <a href="{{ route('frontend.products.manufacturers', ['manufacturer_slug' => $manufacturer->slug]) }}">
+                    {{ $manufacturer->name }}
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
         </ol>
     </nav>
+
 
     <div class="row">
         {{-- Product Image Gallery (Col-lg-6) --}}
@@ -109,7 +110,7 @@
         @foreach($relatedProducts as $related)
         <div class="col">
             <div class="card h-100 shadow-sm">
-                <a href="{{ route('frontend.products.details', ['categoryname_slug' => $related->category->slug, 'productname_slug' => $related->slug]) }}">
+                <a href="{{ route('frontend.products.product_manufacturer_details', ['manufacturer_slug' => $related->manufacturer->slug, 'productname_slug' => $related->slug]) }}">
                     <img src="{{ asset('storage/app/private/'. ($related->avatar->url ?? 'default.png')) }}" class="card-img-top" alt="{{ $related->name }}">
                 </a>
                 <div class="card-body text-center">

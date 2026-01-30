@@ -76,16 +76,16 @@ Route::name('frontend.')->group(function () {
     Route::get('/productsmanufactures', [HomeController::class, 'getProductManufacturer'])->name('products_manufactures');
     Route::get('/products_manu/{manufacturer_slug}', [HomeController::class, 'getProducts_Manufacturers'])->name('products.manufacturers');
     Route::get('/products_cate/{categoryname_slug}', [HomeController::class, 'getProducts_Categories'])->name('products.categories');
-    Route::get('/products/{manufacturer_slug}/{productname_slug}', [HomeController::class, 'getProduct_Manufacturer'])->name('products.product_manufacturer_details');
-    Route::get('/products/{categoryname_slug}/{productname_slug}', [HomeController::class, 'getProduct_Category'])->name('products.product_category_details');
+    Route::get('/products_manu/{manufacturer_slug}/{productname_slug}', [HomeController::class, 'getProduct_Manufacturer'])->name('products.product_manufacturer_details');
+    Route::get('/products_cate/{categoryname_slug}/{productname_slug}', [HomeController::class, 'getProduct_Category'])->name('products.product_category_details');
 
     // Trang tin tức
     Route::get('/articlestopics', [HomeController::class, 'getArticleTopics'])->name('articles_topics');
     Route::get('/articlestypes', [HomeController::class, 'getArticleTypes'])->name('articles_types');
     Route::get('/articles_top/{topicname_slug}', [HomeController::class, 'getArticles_Topics'])->name('articles.topics');
     Route::get('/articles_type/{article_type_slug}', [HomeController::class, 'getArticles_Types'])->name('articles.types');
-    Route::get('/articles/{article_type_slug}/{title_slug}', [HomeController::class, 'getArticle_Types'])->name('articles.articles_types_details');
-    Route::get('/articles/{topicname_slug}/{title_slug}', [HomeController::class, 'getArticle_Topics'])->name('articles.articles_topics_details');
+    Route::get('/articles_type/{article_type_slug}/{title_slug}', [HomeController::class, 'getArticle_Type'])->name('articles.article_type_details');
+    Route::get('/articles_top/{topicname_slug}/{title_slug}', [HomeController::class, 'getArticle_Topic'])->name('articles.article_topic_details');
 
     Route::get('/articles', [HomeController::class, 'getArticles'])->name('articles');
     Route::get('/articles/{topicname_slug}', [HomeController::class, 'getArticles'])->name('articles.topics');

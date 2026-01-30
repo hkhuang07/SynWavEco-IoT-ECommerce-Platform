@@ -150,4 +150,4 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('👁️ [DETAILS_MODAL] Product details modal script loaded');
     });
-</script>
+</script>   

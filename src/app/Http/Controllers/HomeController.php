@@ -231,7 +231,7 @@ class HomeController extends Controller
             ->where('id', '!=', $product->id)
             ->with('avatar')
             ->inRandomOrder()
-            ->take(10)
+            ->take(20)
             ->get();
 
         $title = $product->name;
@@ -261,45 +261,45 @@ class HomeController extends Controller
 
         return view('frontend.product_manufacturer_details', compact('product', 'category', 'manufacturer', 'avatar', 'relatedProducts', 'title'));
     }
-    
+
     public function getArticleTopics()
     {
-        $query = Article::with(['topic', 'article_type', 'article_status']);
+        $query = Article::with(['topic', 'ArticleType', 'ArticleStatus', 'Comments']);
         $topic = null;
         $title = 'All Articles';
-        $articles = $query->orderBy('name', 'asc')->get();
+        $articles = $query->orderBy('title', 'asc')->get();
         $topics = Topic::all();
         return view('frontend.articles_topics', compact('articles', 'topic', 'topics', 'title'));
     }
 
     public function getArticleTypes()
     {
-        $query = Article::with(['topic', 'article_type', 'article_status']);
+        $query = Article::with(['topic', 'ArticleType', 'ArticleStatus', 'Comments']);
         $article_type = null;
         $title = 'All Articles';
-        $articles = $query->orderBy('name', 'asc')->get();
+        $articles = $query->orderBy('title', 'asc')->get();
         $article_types = ArticleType::all();
         return view('frontend.articles_types', compact('articles', 'article_type', 'article_types', 'title'));
     }
 
     public function getArticles_Topics($topicname_slug = '')
     {
-        $query = Article::with(['topic', 'article_type', 'article_status']);
+        $query = Article::with(['topic', 'ArticleType', 'ArticleStatus', 'Comments']);
         $topic = null;
         if ($topicname_slug) {
             $topic = Topic::where('slug', $topicname_slug)->first();
 
             if ($topic) {
-                $query->where('topic_id', $topic->id);
+                $query->where('topicid', $topic->id);
                 $title = $topic->name . ' Articles';
             } else {
                 $title = 'Articles Not Found';
             }
         } else {
-            $title = 'All Articles';    
+            $title = 'All Articles';
         }
 
-        $articles = $query->orderBy('name', 'asc')->get();
+        $articles = $query->orderBy('title', 'asc')->get();
 
         $topics = Topic::all();
 
@@ -307,14 +307,14 @@ class HomeController extends Controller
     }
 
     public function getArticles_Types($article_type_slug = '')
-    {   
-        $query = Article::with(['topic', 'article_type', 'article_status']);
+    {
+        $query = Article::with(['topic', 'ArticleType', 'ArticleStatus', 'Comments']);
         $article_type = null;
         if ($article_type_slug) {
             $article_type = ArticleType::where('slug', $article_type_slug)->first();
 
             if ($article_type) {
-                $query->where('article_type_id', $article_type->id);
+                $query->where('articletypeid', $article_type->id);
                 $title = $article_type->name . ' Articles';
             } else {
                 $title = 'Articles Not Found';
@@ -323,68 +323,122 @@ class HomeController extends Controller
             $title = 'All Articles';
         }
 
-        $articles = $query->orderBy('name', 'asc')->get();
+        $articles = $query->orderBy('title', 'asc')->get();
 
         $article_types = ArticleType::all();
 
         return view('frontend.articles_types', compact('articles', 'article_type', 'article_types', 'title'));
     }
 
-    public function getArticle_Topics($topicname_slug = '', $title_slug = '')
+    public function getArticle_Topic($topicname_slug = '', $title_slug = '')
     {
         $article = Article::where('slug', $title_slug)
-            ->with(['topic', 'article_type', 'article_status', 'comments'])
+            ->with(['Topic', 'ArticleType', 'ArticleStatus', 'Comments'])
             ->firstOrFail();
 
-        $topic = $article->topic;
-
+        $topic = $article->Topic;
         $avatar = $article->images;
 
-        $relatedArticles = Article::where('topic_id', $article->topic_id)
+        $relatedArticles = Article::where('topicid', $article->topicid) // Dùng topicid theo migration
             ->where('id', '!=', $article->id)
-            ->with('avatar')
+            ->where('is_enabled', 1)
             ->inRandomOrder()
-            ->take(10)
+            ->take(4) // Lấy 4 bài để giao diện cân đối
             ->get();
 
-        $title = $article->name;
-
-        return view('frontend.articles_topics_details', compact('article', 'topic', 'avatar', 'relatedArticles', 'title'));
+        $title = $article->title;
+        return view('frontend.article_topic_details', compact('article', 'topic', 'relatedArticles', 'title'));
     }
 
-    public function getArticle_Types($article_type_slug = '', $title_slug = '')
+    public function getArticle_Type($article_type_slug = '', $title_slug = '')
     {
         $article = Article::where('slug', $title_slug)
-            ->with(['topic', 'article_type', 'article_status', 'comments'])
+            ->with(['topic', 'ArticleType', 'ArticleStatus', 'Comments'])
             ->firstOrFail();
 
-        $article_types = $article->article_type;
+        $article_types = $article->ArticleType;
 
         $avatar = $article->images;
 
-        $relatedArticles = Article::where('article_type_id', $article->article_type_id)
+        $relatedArticles = Article::where('articletypeid', $article->articletypeid)
             ->where('id', '!=', $article->id)
-            ->with('avatar')
             ->inRandomOrder()
             ->take(10)
             ->get();
 
-        $title = $article->name;
+        $title = $article->title;
 
-        return view('frontend.articles_types_details', compact('article', 'article_types', 'avatar', 'relatedArticles', 'title'));
+        return view('frontend.article_type_details', compact('article', 'article_types', 'relatedArticles', 'title'));
     }
 
     public function getArticles($topicname_slug = '')
     {
-        // Bổ sung code tại đây
-        return view('frontend.articles');
+        $topics = Topic::all();
+        $article_types = ArticleType::all();
+
+        $query = Article::where('is_enabled', 1)
+            ->with(['Topic', 'ArticleType', 'User']);
+
+        $topic = null;
+
+        if (!empty($topicname_slug)) {
+            $topic = Topic::where('slug', $topicname_slug)->firstOrFail();
+            $query->where('topicid', $topic->id); // topicid khớp với migration
+            $title = 'Topic: ' . $topic->name;
+        } else {
+            $title = 'IoT Knowledge Center';
+        }
+
+        $articles = $query->orderBy('created_at', 'desc')->get();
+
+        return view('frontend.articles', compact(
+            'title',
+            'articles',
+            'topics',
+            'article_types',
+            'topic'
+        ));
     }
 
-    public function getArticle_Details($topicname_slug = '', $title_slug = '')
+    /*public function getArticle_Details($topicname_slug = '', $title_slug = '')
     {
-        // Bổ sung code tại đây
-        return view('frontend.article_details');
-    }
+        $title_id = explode('.', $title_slug);
+        $title = explode('-', $title_id[0]);
+        $article_id = $title[count($title) - 1];
+        
+        $article = Article::where('is_enabled', 1)
+            ->where('is_approved', 1)
+            ->where('id', $article_id)
+            ->firstOrFail();
+        
+        if(!$article) abort(404);
+        
+        // Cập nhật lượt xem
+        $daxem = 'ARTICLE' . $article_id;
+        if(!session()->has($daxem))
+        {
+            $orm = Article::find($article_id);
+            $orm->views = $orm->views + 1;
+            $orm->save();
+            session()->put($daxem, 1);
+        }
+        
+        $relatedArticles = Article::where('is_enabled', 1)
+            ->where('is_approved', 1)
+            ->where('topicid', $article->topicid)
+            ->where('id', '!=', $article->id)
+            ->orderBy('created_at', 'desc')
+            ->take(3)->get();
+
+        return view('frontend.article_details', compact('article', 'relatedArticles'))
+            ->where('is_enabled', 1)
+            ->where('topicid', $article->topicid)
+            ->where('id', '!=', $article->id)
+            ->orderBy('created_at', 'desc')
+            ->take(3)->get();
+        
+        return view('frontend.article_details', compact('article', 'relatedArticles'));
+    }*/
 
     public function getShoppingCard()
     {

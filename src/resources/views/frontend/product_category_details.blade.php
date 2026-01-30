@@ -43,7 +43,6 @@
             </div>
         </div>
 
-        {{-- Product Details and Purchase Options (Col-lg-6) --}}
         <div class="col-lg-6">
             <h1 class="h3 mb-3">{{ $product->name }}</h1>
             
@@ -109,7 +108,7 @@
         @foreach($relatedProducts as $related)
         <div class="col">
             <div class="card h-100 shadow-sm">
-                <a href="{{ route('frontend.products.details', ['categoryname_slug' => $related->category->slug, 'productname_slug' => $related->slug]) }}">
+                <a href="{{ route('frontend.products.product_category_details', ['categoryname_slug' => $related->category->slug, 'productname_slug' => $related->slug]) }}">
                     <img src="{{ asset('storage/app/private/'. ($related->avatar->url ?? 'default.png')) }}" class="card-img-top" alt="{{ $related->name }}">
                 </a>
                 <div class="card-body text-center">

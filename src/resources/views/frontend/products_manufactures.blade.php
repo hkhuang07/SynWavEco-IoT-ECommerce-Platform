@@ -35,13 +35,13 @@
                 <div class="col">
                     <div class="card h-100 shadow-sm">
                         {{-- Thêm đường dẫn tới chi tiết sản phẩm vào hình ảnh --}}
-                        <a href="{{ route('frontend.products.details', ['categoryname_slug' => $product->category->slug, 'productname_slug' => $product->slug]) }}">
+                        <a href="{{ route('frontend.products.product_manufacturer_details', ['manufacturer_slug' => $product->manufacturer->slug, 'productname_slug' => $product->slug]) }}">
                             <img src="{{ asset('storage/app/private/'. ($product->avatar->url ?? 'default.png')) }}" class="card-img-top" alt="{{ $product->name }}">
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">${{ number_format($product->price, 2) }}</p>
-                            <a href="{{ route('frontend.products.details', ['categoryname_slug' => $product->category->slug, 'productname_slug' => $product->slug]) }}" class="btn btn-primary btn-sm">View Details</a>
+                            <a href="{{ route('frontend.products.product_manufacturer_details', ['manufacturer_slug' => $product->manufacturer->slug, 'productname_slug' => $product->slug]) }}" class="btn btn-primary btn-sm">View Details</a>
                         </div>
                     </div>
                 </div>
