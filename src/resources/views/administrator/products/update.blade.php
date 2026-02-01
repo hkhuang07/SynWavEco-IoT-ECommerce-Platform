@@ -23,7 +23,7 @@
                     <div class="form-section mb-4">
                         <h6 class="section-title">
                             <i class="fas fa-info-circle"></i>
-                            Basic Information
+                            Bas ic Information
                         </h6>
                         <div class="row">
                             <div class="col-md-6">

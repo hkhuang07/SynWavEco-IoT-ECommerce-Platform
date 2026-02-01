@@ -1,8 +1,3 @@
-{{-- ========================================
-   SYNWAVECO FRONTEND HEADER COMPONENT
-   Handles Auth Status & Role-Based Navigation
-   ======================================== --}}
-
 <header class="sticky-header">
     {{-- Main Navigation Bar --}}
     <nav class="navbar navbar-expand-lg navbar-sticky bg-body border-bottom">
@@ -38,51 +33,100 @@
 
                     {{-- PRODUCTS --}}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fw-500" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fw-500" href="{{ route('frontend.products') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-box me-2"></i>Products
                         </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('frontend.products_categories') }}">
-                                    <i class="fas fa-list me-2"></i>By Category
+                        <ul class="dropdown-menu shadow-lg">
+                            {{-- By Category --}}
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('frontend.products_categories') }}">
+                                    <span><i class="fas fa-list me-2"></i>By Category</span>
+                                    <i class="fas fa-chevron-right fs-xs ms-2"></i>
                                 </a>
+                                <ul class="dropdown-menu shadow-sm">
+                                    @foreach($globalCategories ?? [] as $category)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('frontend.products.categories', ['categoryname_slug' => $category->slug]) }}">
+                                            {{ $category->name }}
+                                        </a>
+                                    </li>
+                                    @endforeach
+                                </ul>
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('frontend.products_manufactures') }}">
-                                    <i class="fas fa-industry me-2"></i>By Manufacturer
+
+                            {{-- By Manufacturer --}}
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('frontend.products_manufactures') }}">
+                                    <span><i class="fas fa-industry me-2"></i>By Manufacturer</span>
+                                    <i class="fas fa-chevron-right fs-xs ms-2"></i>
                                 </a>
+                                <ul class="dropdown-menu shadow-sm">
+                                    @foreach($globalManufactures ?? [] as $manufacturer)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('frontend.products.manufacturers', ['manufacturer_slug' => $manufacturer->slug]) }}">
+                                            {{ $manufacturer->name }}
+                                        </a>
+                                    </li>
+                                    @endforeach
+                                </ul>
                             </li>
+
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('frontend.products') }}">
+                                <a class="dropdown-item fw-bold text-primary" href="{{ route('frontend.products') }}">
                                     <i class="fas fa-file-alt me-2"></i>All Products
                                 </a>
                             </li>
                         </ul>
                     </li>
 
-                    {{-- ARTICLES / NEWS --}}
+                    {{-- ARTICLES / NEWS DROPDOWN --}}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fw-500" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fw-500" href="{{ route('frontend.articles') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-newspaper me-2"></i>Articles
                         </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('frontend.articles_topics') }}">
-                                    <i class="fas fa-tag me-2"></i>By Topic
+                        <ul class="dropdown-menu shadow-lg">
+                            {{-- By Topic --}}
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('frontend.articles_topics') }}">
+                                    <span><i class="fas fa-tag me-2"></i>By Topic</span>
+                                    <i class="fas fa-chevron-right fs-xs ms-2"></i>
                                 </a>
+                                <ul class="dropdown-menu shadow-sm">
+                                    @foreach($globalTopics ?? [] as $topic)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('frontend.articles.topics', ['topicname_slug' => $topic->slug]) }}">
+                                            {{ $topic->name }}
+                                        </a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+
+                            {{-- By Type --}}
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('frontend.articles_types') }}">
+                                    <span><i class="fas fa-layer-group me-2"></i>By Type</span>
+                                    <i class="fas fa-chevron-right fs-xs ms-2"></i>
+                                </a>
+                                <ul class="dropdown-menu shadow-sm">
+                                    @foreach($globalArticleTypes ?? [] as $articleType)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('frontend.articles.types', ['article_type_slug' => $articleType->slug]) }}">
+                                            {{ $articleType->name }}
+                                        </a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('frontend.articles_types') }}">
-                                    <i class="fas fa-layer-group me-2"></i>By Type
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('frontend.articles') }}">
+                                <a class="dropdown-item fw-bold text-primary" href="{{ route('frontend.articles') }}">
                                     <i class="fas fa-file-alt me-2"></i>All Articles
                                 </a>
                             </li>

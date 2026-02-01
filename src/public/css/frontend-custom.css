@@ -118,6 +118,7 @@ body {
     background: rgba(0, 255, 127, 0.1);
 }
 
+
 /* ==========================================
    3. BUTTONS - GreenTech Theme
    =========================================== */
@@ -246,7 +247,7 @@ body {
 .search-form .form-control {
     border-radius: 25px 0 0 25px;
     border: 2px solid var(--primary-light);
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(184, 237, 182, 0.95); !important;
     padding-left: 1rem;
     font-size: 0.95rem;
 }
@@ -726,15 +727,16 @@ a:hover {
     
     .form-control,
     .form-select {
-        background-color: #2a2a2a;
-        color: #e8e8e8;
+        background-color: #f8f9fa;
+        color: #030104; 
         border-color: #3a3a3a;
     }
     
+    
     .form-control:focus,
     .form-select:focus {
-        background-color: #2a2a2a;
-        color: #e8e8e8;
+        background-color: #c9ebcf;
+        color: #030104;
     }
 }
 
@@ -807,3 +809,59 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--green-spring);
 }
+
+
+/* 1. Thiết lập cho Submenu đa cấp */
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%; /* Đẩy submenu sang phải trên desktop */
+    margin-top: -6px;
+    margin-left: -1px;
+    display: none; /* Mặc định ẩn */
+    border-radius: 8px;
+    background: white;
+    border: 1px solid var(--primary-light);
+    min-width: 200px;
+    z-index: 10002;
+}
+
+/* 2. Hiển thị khi Hover */
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+    animation: slideInLeft 0.2s ease-out;
+}
+
+/* Hiệu ứng chuyển cảnh mượt mà */
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* 3. Tinh chỉnh màu sắc cho đồng nhất SynWavEco */
+.dropdown-item:hover {
+    background-color: var(--primary-pale) !important;
+    color: var(--primary-super-dark) !important;
+}
+
+/* 4. Xử lý trên Mobile (Ẩn hover, dùng click nếu cần) */
+@media (max-width: 991.98px) {
+    .dropdown-submenu > .dropdown-menu {
+        position: static;
+        left: 0;
+        margin-left: 20px;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        display: none;
+    }
+    
+    .dropdown-submenu.show > .dropdown-menu {
+        display: block;
+    }
+}
+
+

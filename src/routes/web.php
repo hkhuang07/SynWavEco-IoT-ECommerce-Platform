@@ -101,8 +101,8 @@ Route::name('frontend.')->group(function () {
     Route::get('/shoppingcard/clear', [HomeController::class, 'clearCart'])->name('shoppingcard.clear');
 
     // Tìm kiếm
-    Route::get('/search/products', [HomeController::class, 'searchProducts'])->name('search.products');
-    Route::get('/search/articles', [HomeController::class, 'searchArticles'])->name('search.articles');
+    Route::get('/search/products', [HomeController::class, 'searchProducts'])->name('search.product_results');
+    Route::get('/search/articles', [HomeController::class, 'searchArticles'])->name('search.article_results');
 
     // Trang tĩnh
     Route::get('/recruitment', [HomeController::class, 'getRecruitment'])->name('recruitment');

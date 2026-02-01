@@ -37,6 +37,9 @@
     {{-- SYNWAVECO CUSTOM CSS - GreenTech Override --}}
     <link rel="stylesheet" href="{{ asset('public/css/frontend-custom.css') }}" />
     <link rel="stylesheet" href="{{ asset('public/css/layout.css') }}" />
+    <!--link rel="stylesheet" href="{{ asset('css/home-additional-styles.css') }}">
+    <script src="{{ asset('js/home-liveshow.js') }}"></script-->
+
     {{-- Custom Styles --}}
     @yield('css')
 </head>
@@ -44,36 +47,36 @@
 <body>
     {{-- Search Box Modal --}}
     <div class="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabindex="-1">
-        <div class="offcanvas-header d-block bg-body py-4">
+        <div class="offcanvas-header d-block py-4">
             <div class="container">
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h4 class="offcanvas-title text-primary"><i class="fas fa-search me-2"></i>Global Search</h4>
+                    <h4 class="offcanvas-title text-primary fw-bold"><i class="fas fa-search me-2"></i>Global Search</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
 
-                <form action="{{ route('frontend.search.products') }}" method="GET" id="globalSearchForm">
+                <form action="{{ route('frontend.search.product_results') }}" method="GET" id="globalSearchForm">
                     <div class="d-flex align-items-center">
-                        <div class="input-group input-group-lg border shadow-sm rounded-pill overflow-hidden">
+                        <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden">
                             <span class="input-group-text bg-white border-0 ps-4">
                                 <i class="fas fa-search text-muted"></i>
                             </span>
                             <input type="search" name="q" id="searchInputField"
                                 class="form-control border-0 px-3"
-                                placeholder="Type IoT product name or topic..."
+                                placeholder="Type product name or article topic..."
                                 required>
                         </div>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-3 shadow">Find Now</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-3 shadow">Search</button>
                     </div>
 
-                    {{-- Chuyển đổi phạm vi tìm kiếm --}}
+                    {{-- Chuyển đổi phạm vi tìm kiếm linh hoạt --}}
                     <div class="d-flex gap-4 mt-3 ps-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search_scope" id="scopeProd" value="products" checked onchange="toggleSearchRoute(this.value)">
-                            <label class="form-check-label small fw-bold text-muted" for="scopeProd">PRODUCTS</label>
+                            <input class="form-check-input" type="radio" name="scope" id="scopeProd" value="products" checked onchange="updateSearchAction(this.value)">
+                            <label class="form-check-label small fw-bold text-muted" for="scopeProd">IOT PRODUCTS</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="search_scope" id="scopeArt" value="articles" onchange="toggleSearchRoute(this.value)">
-                            <label class="form-check-label small fw-bold text-muted" for="scopeArt">ARTICLES</label>
+                            <input class="form-check-input" type="radio" name="scope" id="scopeArt" value="articles" onchange="updateSearchAction(this.value)">
+                            <label class="form-check-label small fw-bold text-muted" for="scopeArt">ARTICLES & NEWS</label>
                         </div>
                     </div>
                 </form>
@@ -89,16 +92,10 @@
                 <p class="fs-sm mb-0 text-muted">Enter product name, topic, or technology keywords.</p>
             </div>
         </div>
+    </div>
 
 
-        <!--div class="offcanvas-body px-0">
-            <div class="container text-center py-5">
-                <i class="fas fa-microchip fa-3x text-body-tertiary opacity-60 mb-4"></i>
-                <h6 class="mb-2">Ready to explore SynWavEco?</h6>
-                <p class="fs-sm mb-0 text-muted">Type keywords above and press Enter to find what you need.</p>
-            </div>
-        </div-->
-
+    <div>
         <div class="offcanvas-header nav border-top px-0 py-3 mt-3 d-md-none">
             <ul class="navbar-nav w-100">
                 @guest
@@ -128,13 +125,6 @@
                 </li>
                 @endguest
             </ul>
-        </div>
-        <div class="offcanvas-body px-0">
-            <div class="container text-center">
-                <i class="fas fa-search fa-3x text-body-tertiary opacity-60 mb-4"></i>
-                <h6 class="mb-2">Search results will appear here</h6>
-                <p class="fs-sm mb-0">Start typing in the search box to see immediate results.</p>
-            </div>
         </div>
     </div>
 
@@ -211,7 +201,7 @@
         </button>
 
         {{-- Shopping Cart Button --}}
-        <button type="button" class="btn btn-lg btn-success rounded-pill shadow-lg mb-3 d-flex align-items-center justify-content-center position-relative"
+        <button type="button" class="btn btn-lg btn-primary rounded-pill shadow-lg mb-3 d-flex align-items-center justify-content-center position-relative"
             data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" style="width: 56px; height: 56px; padding: 0;">
             <i class="fas fa-shopping-cart fs-5"></i>
             @if(Cart::count() > 0)
@@ -257,6 +247,16 @@
             console.log('✅ Frontend Layout: Initialized successfully');
         });
 
+        document.querySelectorAll('.dropdown-submenu .dropdown-toggle').forEach(function(element) {
+            element.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.parentNode.classList.toggle('show');
+                }
+            });
+        });
+
         // Theme switcher functionality
         function initializeThemeSwitcher() {
             const themeButtons = document.querySelectorAll('[data-bs-theme-value]');
@@ -274,6 +274,17 @@
             // Load saved theme
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-bs-theme', savedTheme);
+        }
+
+        function updateSearchAction(value) {
+            const form = document.getElementById('globalSearchForm');
+            if (value === 'articles') {
+                form.action = "{{ route('frontend.search.article_results') }}";
+                document.getElementById('searchInputField').placeholder = "Search technical articles & topics...";
+            } else {
+                form.action = "{{ route('frontend.search.product_results') }}";
+                document.getElementById('searchInputField').placeholder = "Type IoT product name...";
+            }
         }
 
         initializeThemeSwitcher();

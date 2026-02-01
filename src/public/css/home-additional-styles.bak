@@ -1,0 +1,329 @@
+/* ================================================
+   SYNWAVECO HOMEPAGE - ADDITIONAL STYLES
+   Enhanced animations and refinements
+   ================================================ */
+
+/* Pagination bullet customization */
+.swiper-pagination {
+    position: absolute !important;
+    z-index: 10;
+}
+
+.swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+    margin: 0;
+    border: none;
+}
+
+.swiper-pagination-bullet-active {
+    background: #00CD66;
+    width: 28px;
+    border-radius: 6px;
+}
+
+/* Hover effects for navigation elements */
+.article-type-tab {
+    position: relative;
+    overflow: hidden;
+}
+
+.article-type-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.article-type-tab:hover::before {
+    left: 100%;
+}
+
+/* Topic card animation enhancement */
+.topic-card-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.topic-card-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 255, 127, 0.1) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.topic-card-item:hover::after {
+    opacity: 1;
+}
+
+/* Category pill animation */
+.category-pill {
+    position: relative;
+}
+
+.category-pill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 127, 0.15), transparent);
+    opacity: 0;
+    border-radius: 25px;
+}
+
+.category-pill:hover::after {
+    animation: shimmer 0.6s ease-in-out;
+}
+
+@keyframes shimmer {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* Manufacturer grid stagger animation */
+.manufacturer-grid-item {
+    animation: staggerFadeIn 0.5s ease-out backwards;
+}
+
+@for $i from 1 through 20 {
+    .manufacturer-grid-item:nth-child(#{$i}) {
+        animation-delay: #{($i - 1) * 0.05}s;
+    }
+}
+
+@keyframes staggerFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Feature card glow on hover */
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(0, 255, 127, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+
+.feature-card:hover::before {
+    animation: glowShimmer 0.6s ease-in-out;
+}
+
+@keyframes glowShimmer {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* Partnership card animation */
+.partnership-card-balanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00CD66 0%, #3CB371 50%, #00CD66 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px 12px 0 0;
+}
+
+.partnership-card-balanced:hover::before {
+    opacity: 1;
+}
+
+.shipper-card-balanced::before {
+    background: linear-gradient(90deg, #1E90FF 0%, #4682B4 50%, #1E90FF 100%);
+}
+
+/* Button ripple effect */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Scroll animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Newsletter section enhanced animation */
+.newsletter-section {
+    position: relative;
+    animation: newsletterGlow 4s ease-in-out infinite;
+}
+
+@keyframes newsletterGlow {
+    0%, 100% {
+        box-shadow: 0 10px 40px rgba(0, 139, 69, 0.3);
+    }
+    50% {
+        box-shadow: 0 15px 50px rgba(0, 139, 69, 0.5);
+    }
+}
+
+/* Input animation */
+.newsletter-form .form-control {
+    transition: all 0.3s ease;
+}
+
+.newsletter-form .form-control:focus {
+    transform: scale(1.02);
+}
+
+/* Responsive animations */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .article-type-tab,
+    .topic-card-item,
+    .category-pill,
+    .manufacturer-grid-item,
+    .feature-card,
+    .partnership-card-balanced {
+        border-width: 2px;
+    }
+}
+
+/* Focus visible for accessibility */
+.article-type-tab:focus-visible,
+.topic-card-item:focus-visible,
+.category-pill:focus-visible,
+.manufacturer-grid-item:focus-visible,
+.feature-card:focus-visible,
+.partnership-card-balanced:focus-visible {
+    outline: 2px solid #00CD66;
+    outline-offset: 2px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00CD66 0%, #3CB371 100%);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00FF7F;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .article-type-tab,
+    .category-pill {
+        background: #2a2a2a;
+        border-color: #3a3a3a;
+        color: #e8e8e8;
+    }
+
+    .article-type-tab:hover,
+    .article-type-tab.active {
+        background: #00CD66;
+    }
+
+    .topic-card-item,
+    .manufacturer-grid-item,
+    .feature-card,
+    .partnership-card-balanced {
+        background: #1f1f1f;
+        border-color: #3a3a3a;
+        color: #e8e8e8;
+    }
+}
+
+/* Print styles */
+@media print {
+    .swiper,
+    .hero-showcase,
+    .btn {
+        display: none;
+    }
+
+    .feature-card,
+    .partnership-card-balanced {
+        page-break-inside: avoid;
+        border: 1px solid #ccc;
+    }
+}

@@ -29,5 +29,6 @@ class CategoriesServiceProvider extends ServiceProvider
             $categories = Category::orderBy('name')->get();
             $view->with('globalCategories', $categories);
         });
+
     }
 }

@@ -78,7 +78,7 @@ class HomeController extends Controller
         $topics = Topic::with([
             'Article' => function ($query) {
                 $query->latest()
-                    ->take(8);  
+                    ->take(8);
             }
         ])->get();
 
@@ -99,12 +99,12 @@ class HomeController extends Controller
             ->limit(10)
             ->get();
 
-        $typesArticles = Article::with(['ArticleStatus', 'ArticleType','Comments'])
+        $typesArticles = Article::with(['ArticleStatus', 'ArticleType', 'Comments'])
             ->inRandomOrder()
             ->limit(10)
             ->get();
 
-        $featuredArticles = Article::with(['ArticleStatus', 'Topic','Comments'])
+        $featuredArticles = Article::with(['ArticleStatus', 'Topic', 'Comments'])
             ->inRandomOrder()
             ->limit(10)
             ->get();
@@ -120,7 +120,7 @@ class HomeController extends Controller
                 'images' => array_slice($allImages, 0, 10)
             ];
         }
-        
+
         foreach ($manufacturesProducts as $product) {
             $allImages = $product->images->pluck('url')->all();
             $sliderImages[$product->slug] = [
@@ -141,7 +141,7 @@ class HomeController extends Controller
                 'images' => $article->image
             ];
         }
-        
+
         foreach ($typesArticles as $article) {
             $sliderImages[$article->slug] = [
                 'title' => $article->title,
@@ -159,39 +159,75 @@ class HomeController extends Controller
     public function searchProducts(Request $request)
     {
         $keyword = $request->query('q');
-        $query = Product::query();
 
-        if ($keyword) {
-            $query->where(function ($q) use ($keyword) {
-                $q->where('name', 'LIKE', '%' . $keyword . '%')
-                    ->orWhere('description', 'LIKE', '%' . $keyword . '%');
-            });
-
-            $query->orWhereHas('category', function ($q) use ($keyword) {
-                $q->where('name', 'LIKE', '%' . $keyword . '%');
-            });
-
-            $query->orWhereHas('manufacturer', function ($q) use ($keyword) {
-                $q->where('name', 'LIKE', '%' . $keyword . '%');
-            });
-        } else {
-            $products = collect();
+        if (empty($keyword)) {
+            return redirect()->route('frontend.home');
         }
-        $products = $query
-            ->with(['category', 'manufacturer', 'images', 'details'])
-            ->paginate(12)
-            ->appends(['q' => $keyword]);
 
+        $product = Product::where('name', 'LIKE', '%' . $keyword . '%')
+            ->with(['category', 'manufacturer', 'details', 'images'])
+            ->first();
+
+        if (!$product) {
+            $title = 'No results found for: "' . $keyword . '"';
+            $categories = Category::all();
+            $manufactures = Manufacturer::all();
+            return view('frontend.products_result', compact('title', 'categories', 'manufactures', 'keyword'));
+        }
+
+        $category = $product->category;
+        $avatar = $product->images->where('is_avatar', true)->first();
+
+        $relatedProducts = Product::where('id', '!=', $product->id)
+            ->where(function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('description', 'LIKE', '%' . $keyword . '%');
+            })
+            ->with(['category', 'avatar'])
+            ->take(12)
+            ->get();
+
+        $title = 'Search results for: "' . $keyword . '"';
+
+        // Dữ liệu cho sidebar/menu nếu cần
         $categories = Category::all();
+        $manufactures = Manufacturer::all();
 
-        return view('frontend.products', [
-            'products' => $products,
-            'categories' => $categories,
-            'search_keyword' => $keyword,
-            'title' => 'Kết quả tìm kiếm cho: "' . $keyword . '"'
-        ]);
+        return view('frontend.product_results', compact(
+            'product',
+            'category',
+            'avatar',
+            'relatedProducts',
+            'title',
+            'categories',
+            'manufactures',
+            'keyword'
+        ));
     }
 
+
+    public function searchArticles(Request $request)
+    {
+        $keyword = $request->query('q');
+        if (empty($keyword)) return redirect()->route('frontend.home');
+
+        // Lấy 1 bài viết khớp nhất đầu tiên
+        $article = Article::where('title', 'LIKE', '%' . $keyword . '%')
+            ->with(['Topic', 'ArticleType'])
+            ->first();
+
+        if (!$article) {
+            return view('frontend.article_results', ['title' => 'No results', 'keyword' => $keyword]);
+        }
+
+        // Lấy các bài viết liên quan còn lại
+        $relatedArticles = Article::where('id', '!=', $article->id)
+            ->where('title', 'LIKE', '%' . $keyword . '%')
+            ->with(['Topic', 'ArticleType'])
+            ->take(12)->get();
+
+        return view('frontend.article_results', compact('article', 'relatedArticles', 'keyword'));
+    }
 
     public function getProductsCategories()
     {
