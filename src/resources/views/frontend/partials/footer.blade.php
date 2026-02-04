@@ -1,6 +1,6 @@
  <footer>
      <div class="container py-5">
-         <div class="footer-service-intro p-4 mb-5 rounded">
+         <div class="footer-service-intro p-4 rounded">
              <h2 class="mb-4">
                  <i class="fas fa-seedling me-2"></i>{{ config('app.name', 'SynWavEco') }}: Smart IoT Solutions for Agriculture
              </h2>
@@ -184,67 +184,3 @@
          </button>
      </div>
  </footer>
-
- {{-- Footer Styles --}}
- <style>
-     /* Scroll to Top Button */
-     #scrollToTopBtn {
-         opacity: 0;
-         transition: opacity 0.3s ease;
-         background-color: #008B45;
-         border: none;
-     }
-
-     #scrollToTopBtn:hover {
-         background-color: #00CD66;
-         transform: translateY(-3px);
-     }
-
-     #scrollToTopBtn.show {
-         opacity: 1;
-         display: block !important;
-     }
-
-     /* Responsive */
-     @media (max-width: 768px) {
-         footer {
-             padding: 2rem 0 1rem;
-         }
-
-         .footer-column {
-             margin-bottom: 1.5rem;
-         }
-
-         .footer-links {
-             flex-direction: column;
-             gap: 0.5rem;
-         }
-
-         .footer-link-bottom {
-             display: block;
-             margin-bottom: 0.5rem;
-         }
-     }
- </style>
-
- {{-- JavaScript for Scroll to Top --}}
- <script>
-     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-
-     // Show/hide button based on scroll position
-     window.addEventListener('scroll', () => {
-         if (window.pageYOffset > 300) {
-             scrollToTopBtn.classList.add('show');
-         } else {
-             scrollToTopBtn.classList.remove('show');
-         }
-     });
-
-     // Scroll to top on button click
-     scrollToTopBtn.addEventListener('click', () => {
-         window.scrollTo({
-             top: 0,
-             behavior: 'smooth'
-         });
-     });
- </script>

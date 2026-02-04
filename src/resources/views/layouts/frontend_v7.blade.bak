@@ -46,52 +46,51 @@
 
 <body>
     {{-- Search Box Modal --}}
-    <div class="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabindex="-1">
-        <div class="offcanvas-header d-block py-4">
+    <div class="offcanvas offcanvas-top show" id="searchBox" data-bs-backdrop="false" tabindex="-1">
+        <div class="offcanvas-header py-2 border-0 justify-content-end container">
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body pt-0 pb-4">
             <div class="container">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h4 class="offcanvas-title text-primary fw-bold"><i class="fas fa-search me-2"></i>Global Search</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-
                 <form action="{{ route('frontend.search.product_results') }}" method="GET" id="globalSearchForm">
-                    <div class="d-flex align-items-center">
-                        <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden">
-                            <span class="input-group-text bg-white border-0 ps-4">
-                                <i class="fas fa-search text-muted"></i>
-                            </span>
-                            <input type="search" name="q" id="searchInputField"
-                                class="form-control border-0 px-3"
-                                placeholder="Type product name or article topic..."
-                                required>
-                        </div>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-3 shadow">Search</button>
+                    <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border-primary-light">
+                        <span class="input-group-text bg-white border-0 ps-4">
+                            <i class="fas fa-search text-primary"></i>
+                        </span>
+                        <input type="search" name="q" id="searchInputField" class="form-control border-0 px-3" 
+                               placeholder="Search for IoT devices or knowledge..." required>
+                        <button type="submit" class="btn btn-primary px-4 shadow-none">Find Now</button>
                     </div>
-
-                    {{-- Chuyển đổi phạm vi tìm kiếm linh hoạt --}}
-                    <div class="d-flex gap-4 mt-3 ps-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="scope" id="scopeProd" value="products" checked onchange="updateSearchAction(this.value)">
-                            <label class="form-check-label small fw-bold text-muted" for="scopeProd">IOT PRODUCTS</label>
+                    <div class="d-flex gap-4 mt-2 ps-3 justify-content-center">
+                        <div class="form-check small fw-bold">
+                            <input class="form-check-input" type="radio" name="scope" id="scopeP" value="products" checked onchange="updateSearchAction(this.value)">
+                            <label class="form-check-label text-muted" for="scopeP">PRODUCTS</label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="scope" id="scopeArt" value="articles" onchange="updateSearchAction(this.value)">
-                            <label class="form-check-label small fw-bold text-muted" for="scopeArt">ARTICLES & NEWS</label>
+                        <div class="form-check small fw-bold">
+                            <input class="form-check-input" type="radio" name="scope" id="scopeA" value="articles" onchange="updateSearchAction(this.value)">
+                            <label class="form-check-label text-muted" for="scopeA">ARTICLES</label>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+    </div>
 
-        <div class="offcanvas-body bg-body-tertiary">
-            <div class="container text-center py-4">
-                <div class="opacity-50 mb-3">
-                    <i class="fas fa-terminal fa-3x"></i>
-                </div>
-                <h6 class="mb-1 text-dark">SynWavEco Search Engine</h6>
-                <p class="fs-sm mb-0 text-muted">Enter product name, topic, or technology keywords.</p>
-            </div>
-        </div>
+    <div id="pageWrapper">
+        @include('frontend.partials.header')
+        <main class="content-wrapper">
+            @yield('content')
+        </main>
+        {{-- Footer đặt ngoài container để tràn viền 100% --}}
+        @include('frontend.partials.footer')
+    </div>
+
+    {{-- Nút search nổi (Chỉ hiện khi searchBox bị ẩn) --}}
+    <div class="floating-buttons position-fixed top-50 end-0 z-sticky me-3">
+        <button type="button" id="btnOpenSearch" class="btn btn-lg btn-primary rounded-pill shadow-lg d-none align-items-center justify-content-center" 
+                data-bs-toggle="offcanvas" data-bs-target="#searchBox" style="width:56px; height:56px;">
+            <i class="fas fa-search"></i>
+        </button>
     </div>
 
 
@@ -179,26 +178,27 @@
     </div>
 
     {{-- Page Wrapper --}}
-    <div id="pageWrapper" class="d-flex flex-column min-vh-100">
+    <div id="pageWrapper">
         {{-- HEADER COMPONENT --}}
         @include('frontend.partials.header')
 
         {{-- MAIN CONTENT --}}
-        <main class="content-wrapper flex-grow-1">
+        <main class="content-wrapper">
             @yield('content')
         </main>
+
         {{-- FOOTER COMPONENT --}}
         @include('frontend.partials.footer')
     </div>
 
     {{-- Floating Action Buttons --}}
-    <div class="floating-buttons position-fixed top-50 end-0 z-sticky me-3 me-xl-4 pb-4" style="bottom: auto; transform: translateY(-50%);">
-        <!--div class="floating-buttons position-fixed top-50 end-0 z-sticky me-3 me-xl-4 pb-4" style="transform: translateY(-50%);"-->
+    <!--div class="floating-buttons position-fixed top-50 end-0 z-sticky me-3 me-xl-4 pb-4" style="bottom: auto; transform: translateY(-50%);"-->
+    <div class="floating-buttons position-fixed top-50 end-0 z-sticky me-3 me-xl-4 pb-4" style="transform: translateY(-50%);">
         {{-- Search Button --}}
-        <button type="button" class="btn btn-lg btn-primary rounded-pill shadow-lg mb-3 d-flex align-items-center justify-content-center"
+        <!--button type="button" class="btn btn-lg btn-primary rounded-pill shadow-lg mb-3 d-flex align-items-center justify-content-center"
             data-bs-toggle="offcanvas" data-bs-target="#searchBox" style="width: 56px; height: 56px; padding: 0;">
             <i class="fas fa-search fs-5"></i>
-        </button>
+        </button-->
         <button type="button" id="btnOpenSearch"
             class="btn btn-lg btn-primary rounded-pill shadow-lg mb-3 d-none align-items-center justify-content-center"
             data-bs-toggle="offcanvas" data-bs-target="#searchBox"

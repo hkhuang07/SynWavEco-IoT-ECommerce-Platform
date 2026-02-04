@@ -67,9 +67,11 @@
             </li>
             @else
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-user-circle"></i> {{ Auth::user()->name }}
-                    <span class="badge-role"> {{ Auth::user()->role->name ?? '' }}</span>
+                <a class="nav-link fw-600 text-primary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center;">
+                    <img id="currentAvatar" src="{{ asset('storage/app/private') }}/{{Auth::user()->avatar}}" alt="Avatar" class="d-flex justify-content-center align-items-center flex-shrink-0 text-primary bg-primary-subtle lh-1 rounded-circle me-3" style="width:2.2rem; height:2.2rem">
+                    <span class="badge ms-2">
+                        {{ Auth::user()->name }}
+                    </span>
                 </a>
             </li>
             <li class="nav-item">
@@ -85,7 +87,7 @@
             <li>
                 <h6 class="sidebar-section-title">Main Navigation</h6>
             </li>
-           
+
             <li>
                 @php
                 $homeRoute = 'frontend.home';
@@ -258,7 +260,7 @@
                 <span class="fw-bold brand-text">{{ config('app.name', 'SynWavEco') }}</span>
             </a>
 
-            
+
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                 <i class="fas fa-bars"></i>
@@ -269,6 +271,32 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('frontend.home') }}">
                             <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+
+                    {{-- PRODUCTS --}}
+                    <li class="nav-item ">
+                        <a class="nav-link fw-500" href="{{ route('frontend.products') }}">
+                            <i class="fas fa-box me-2"></i>Products
+                        </a>
+                    </li>
+
+                    {{-- ARTICLES / NEWS DROPDOWN --}}
+                    <li class="nav-item">
+                        <a class="nav-link fw-500" href="{{ route('frontend.articles') }}">
+                            <i class="fas fa-newspaper me-2"></i>Articles
+                        </a>
+                    </li>
+
+                    {{-- ABOUT / CONTACT --}}
+                    <li class="nav-item">
+                        <a class="nav-link fw-500" href="{{ route('frontend.contact') }}">
+                            <i class="fas fa-envelope me-2"></i>Contact
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-500" href="{{ route('frontend.recruitment') }}">
+                            <i class="fas fa-briefcase me-2"></i>Recruitment
                         </a>
                     </li>
                 </ul>
@@ -290,13 +318,34 @@
                     </li>
                     @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i> {{ Auth::user()->name }}
+                        <a class="nav-link dropdown-toggle fw-600 text-primary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center;">
+                            <img id="currentAvatar" src="{{ asset('storage/app/private') }}/{{Auth::user()->avatar}}" alt="Avatar" class="d-flex justify-content-center align-items-center flex-shrink-0 text-primary bg-primary-subtle lh-1 rounded-circle me-3" style="width:2.2rem; height:2.2rem">
+                            <span class="badge badge-role ms-2 text-white">
+                                {{ Auth::user()->name }}
+                            </span>
                         </a>
+
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{route('user.profile')}}">
-                                    <i class="fas fa-user"></i> Profile
-                                </a></li>
+                            <li>
+                                @php
+                                $homeRoute = 'frontend.home';
+                                if(Auth::user()->role) {
+                                $roleName = Auth::user()->role->name;
+                                if($roleName === 'Administrator') $homeRoute = 'administrator.home';
+                                elseif($roleName === 'Saler') $homeRoute = 'saler.home';
+                                elseif($roleName === 'Shipper') $homeRoute = 'shipper.home';
+                                }
+                                @endphp
+                                <a class="dropdown-item fw-bold" href="{{ route($homeRoute) }}">
+                                    <i class="fas fa-th-large fs-lg opacity-60 me-2"></i>
+                                    Go to Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('user.profile') }}">
+                                    <i class="fas fa-id-card me-2"></i>My Profile
+                                </a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

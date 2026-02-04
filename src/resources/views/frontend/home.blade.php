@@ -1,9 +1,8 @@
 @extends('layouts.frontend')
-@section('title', 'Trang chủ')
+@section('title', 'HomePage - SynWavEco')
 @section('content')
 <!-- Page content -->
-<main class="content-wrapper">
-    <!-- Hero slider -->
+    
     <section class="container pt-3 mb-4">
         <div class="row">
             <div class="col-12">
@@ -242,7 +241,7 @@
                                 </a>
                             </h3>
                             <div class="d-flex align-items-center justify-content-between">
-                                <div class="h5 lh-1 mb-0">{{ number_format($prod->price, 0, ',', '.') }}<small>$</small></div>
+                                <div class="h5 lh-1 mb-0">{{ number_format($prod->price, 0, ',', '.') }}<small class="text-body-tertiary ms-2">VND</small></div>
                                 <a href="{{ route('frontend.shoppingcard.add', ['productname_slug' => $prod->slug]) }}" class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2">
                                     <i class="ci-shopping-cart fs-base animate-target"></i>
                                 </a>
@@ -254,5 +253,30 @@
             </div>
         </section>
         @endforeach
-</main>
+
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainBannerSwiper = new Swiper('.swiper-main-liveshow', {
+            loop: true,
+            speed: 800,
+            autoplay: {
+                delay: 3000, 
+                disableOnInteraction: false,
+            },
+            effect: 'fade', 
+            fadeEffect: { crossFade: true }
+        });
+
+        const subContentSwiper = new Swiper('.swiper-sub-content', {
+            loop: true,
+            speed: 800,
+            allowTouchMove: false, 
+            spaceBetween: 30
+        });
+
+        mainBannerSwiper.controller.control = subContentSwiper;
+        subContentSwiper.controller.control = mainBannerSwiper;
+    });
+</script>

@@ -55,7 +55,6 @@ class HomeController extends Controller
             return redirect()->route('user.home');
         }
     }
-    // HomeController.php
 
     public function getHome()
     {
@@ -155,6 +154,45 @@ class HomeController extends Controller
 
         return view('frontend.home', compact('manufactures', 'categories', 'featuredProducts', 'manufacturesProducts', 'sliderImages', 'topics', 'article_types', 'featuredArticles', 'typesArticles'));
     }
+
+    /*public function getHome(Request $request)
+    {
+        $categories = Category::paginate(12, ['*'], 'cat_page');
+
+        $articles = Article::where('is_enabled', 1)
+            ->with(['Topic', 'ArticleType'])
+            ->latest()
+            ->paginate(4, ['*'], 'art_page');
+
+        $manufactures = Manufacturer::all();
+
+        $featuredProducts = Product::with(['images', 'category'])
+            ->latest()
+            ->take(8)
+            ->get();
+
+        $topProducts = Product::with('avatar')->inRandomOrder()->take(5)->get();
+        $topArticles = Article::with('Topic')->inRandomOrder()->take(5)->get();
+        
+        $tripletSlides = [];
+        for ($i = 0; $i < 5; $i++) {
+            $tripletSlides[] = [
+                'banner' => "banner-system-" . ($i + 1) . ".jpg", // public/images/
+                'product' => $topProducts[$i] ?? $topProducts[0],
+                'article' => $topArticles[$i] ?? $topArticles[0],
+            ];
+        }
+
+        $article_types = ArticleType::all();
+        $topics = Topic::all();
+
+        return view('frontend.home', compact(
+            'categories', 'articles', 'manufactures', 
+            'featuredProducts', 'tripletSlides', 
+            'topics', 'article_types'
+        ));
+    }*/
+
 
     public function searchProducts(Request $request)
     {
@@ -404,6 +442,7 @@ class HomeController extends Controller
         }
 
         $articles = $query->orderBy('title', 'asc')->get();
+        
 
         $article_types = ArticleType::all();
 
@@ -415,6 +454,10 @@ class HomeController extends Controller
         $article = Article::where('slug', $title_slug)
             ->with(['Topic', 'ArticleType', 'ArticleStatus', 'Comments'])
             ->firstOrFail();
+
+        $article->update([
+            'views' => $article->views + 1,
+        ]);
 
         $topic = $article->Topic;
         $avatar = $article->images;
@@ -435,6 +478,10 @@ class HomeController extends Controller
         $article = Article::where('slug', $title_slug)
             ->with(['topic', 'ArticleType', 'ArticleStatus', 'Comments'])
             ->firstOrFail();
+        
+        $article->update([
+            'views' => $article->views + 1,
+        ]);
 
         $article_types = $article->ArticleType;
 

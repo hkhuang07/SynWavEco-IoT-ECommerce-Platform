@@ -508,16 +508,24 @@ body {
 /* ===================================
    FOOTER - FULL DESIGN WITH HIGH CONTRAST
    =================================== */
+
 footer {
+    color: var(--text-dm-primary);
+    width: 100vw !important;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    margin-top: 2rem;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-image: linear-gradient(90deg, var(--green-spring) 0%, var(--green-lime) 50%, var(--primary-lighter) 100%) 1;
+    border-top: 4px solid var(--green-spring);
     background: linear-gradient(135deg, 
         var(--bg-dark) 0%, 
         var(--primary-medium) 50%, 
-        var(--bg-darker) 100%);
-    color: var(--text-dm-primary);
-    margin-top: 2rem;
-    padding: 0;
-    border-top: 4px solid;
-    border-image: linear-gradient(90deg, var(--green-spring) 0%, var(--green-lime) 50%, var(--primary-lighter) 100%) 1;
+        var(--bg-darker) 100%) !important;
 }
 
 .footer-service-intro {
@@ -642,6 +650,8 @@ footer {
     border-top: 2px solid var(--primary-medium);
     background: linear-gradient(90deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 100, 0, 0.2) 50%, rgba(0, 0, 0, 0.4) 100%);
     color: var(--text-dm-muted);
+    width: 100%;
+    margin-top: 0;
 }
 
 .footer-bottom-links a {
@@ -667,6 +677,15 @@ footer {
     font-weight: 600;
 }
 
+footer .container, 
+footer .container-fluid {
+    max-width: 1300px;
+    margin: 0 auto;
+    margin-bottom: 0 !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 0 !important;
+}
 /* ===================================
    AUTHENTICATION STYLES - INTEGRATED NEWSMART DESIGN
    =================================== */

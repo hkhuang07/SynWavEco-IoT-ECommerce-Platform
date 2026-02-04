@@ -3,12 +3,12 @@
 @section('title', 'Control Center - SynWavEco')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('public/css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ asset('public/css/dashboard.css') }}">
 @endsection
 
 @section('content')
 <div class="dashboard-container">
-    
+
     <div class="welcome-section mb-4 banner-gradient-primary text-white">
         <div class="row align-items-center">
             <div class="col-lg-8">
@@ -19,7 +19,11 @@
             </div>
             <div class="col-lg-4 text-lg-end">
                 <div class="admin-info">
-                    <div class="admin-avatar"><i class="fas fa-user-circle fa-3x"></i></div>
+                    <div class="admin-avatar">
+                        <i class="fas fa-3x">
+                            <img id="currentAvatar" src="{{ asset('storage/app/private') }}/{{Auth::user()->avatar}}" alt="Avatar" class="d-flex justify-content-center align-items-center flex-shrink-0 text-primary bg-primary-subtle lh-1 rounded-circle me-3" style="width:4rem; height:4rem">
+                        </i>
+                    </div>
                     <div class="admin-details">
                         <h6 class="admin-name mb-0">{{ Auth::user()->name }}</h6>
                         <small class="text-green-spring">System Administrator</small>
@@ -82,7 +86,7 @@
                 <p class="small text-muted mb-0">Products</p>
             </div>
         </div>
-        
+
         <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="stat-icon" style="background: var(--bg-orangeyellow)"><i class="fas fa-tags"></i></div>
@@ -121,7 +125,7 @@
     </div>
 
     <div class="row g-4 mb-5">
-        
+
         <div class="col-lg-6">
             <h4 class="section-title"><i class="fas fa-shopping-basket"></i> Commerce & Logistics</h4>
             <div class="module-card">
@@ -220,10 +224,27 @@
                     @foreach(\App\Models\Article::with('user')->latest()->limit(4)->get() as $article)
                     <div class="activity-item d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="fw-bold">{{ Str::limit($article->title, 30) }}</div>
+                            <div class="fw-bold">{{ Str::limit($article->title, 100) }}</div>
                             <small class="text-muted">by {{ $article->user->name ?? 'Unknown Author' }} on {{ $article->created_at->format('d/m/Y') }}</small>
                         </div>
                         <span class="badge bg-gt-secondary">New Article</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="activity-card">
+                <div class="p-3 border-bottom bg-light fw-bold small"><i class="fas fa-newspaper me-2"></i>LATEST PRODUCTS</div>
+                <div class="activity-list">
+                    @foreach(\App\Models\Product::with('category')->latest()->limit(4)->get() as $product)
+                    <div class="activity-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-bold">{{ Str::limit($product->name, 100) }}</div>
+                            <small class="text-muted">by {{ $product->category->name ?? 'Unknown Categories' }} on {{ $product->created_at->format('d/m/Y') }}</small>
+                        </div>
+                        <span class="badge bg-gt-secondary">New Product</span>
                     </div>
                     @endforeach
                 </div>

@@ -1,918 +1,237 @@
 @extends('layouts.frontend')
-@section('title', 'Trang chủ')
+@section('title', 'Control Center - SynWavEco')
 @section('content')
 <!-- Page content -->
 <main class="content-wrapper">
-    <!-- ============================================
-         HERO SECTION - Featured Products & Articles Split
-         ============================================ -->
-    <section class="hero-showcase mb-5">
-        <div class="container-fluid px-0">
-            <div class="row g-0">
-                <!-- Left: Featured Products Carousel -->
-                <div class="col-lg-6 hero-products-section">
-                    <div class="swiper hero-products-swiper" data-swiper='{"spaceBetween": 0, "loop": true, "speed": 800, "autoplay": {"delay": 2000, "disableOnInteraction": false}, "effect": "fade", "fadeEffect": {"crossFade": true}, "pagination": {"el": ".hero-products-section .swiper-pagination", "clickable": true}}'>
-                        <div class="swiper-wrapper">
-                            @foreach($featuredProducts->take(6) as $product)
-                            <div class="swiper-slide">
-                                <div class="hero-product-item">
-                                    <img src="{{ asset('storage/app/private/'. optional($product->avatar)->url) }}" alt="{{ $product->name }}" class="hero-product-img" />
-                                    <div class="hero-product-info-card">
-                                        <p class="hero-label">{{ $product->category->name ?? 'IoT Product' }}</p>
-                                        <h2 class="hero-title">{{ Str::limit($product->name, 35) }}</h2>
-                                        <p class="hero-price">{{ number_format($product->price, 0, ',', '.') }}₫</p>
-                                        <a href="{{ route('frontend.products.product_category_details', ['categoryname_slug' => $product->category->slug, 'productname_slug' => $product->slug]) }}" class="btn btn-primary btn-sm">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                        <div class="swiper-pagination hero-pagination"></div>
-                    </div>
+    {{-- 1. STATIC SEARCH ON HOME --}}
+    <section class="bg-body py-4 shadow-sm mb-4">
+        <div class="container">
+            <form action="{{ route('frontend.search.product_results') }}" method="GET">
+                <div class="input-group input-group-lg rounded-pill overflow-hidden border">
+                    <input type="text" name="q" class="form-control border-0 px-4" placeholder="Ready to explore GreenTech? Enter keyword...">
+                    <button class="btn btn-primary px-5" type="submit">SEARCH</button>
                 </div>
-
-
-                <!-- Right: Featured Articles Carousel -->
-                <div class="col-lg-6 hero-articles-section">
-                    <div class="hero-content-wrapper">
-                        <div class="swiper hero-articles-swiper" data-swiper='{"spaceBetween": 0, "loop": true, "speed": 600, "autoplay": {"delay": 5000, "disableOnInteraction": false}, "effect": "fade", "fadeEffect": {"crossFade": true}}'>
-                            <div class="swiper-wrapper">
-                                @foreach($featuredArticles->take(6) as $article)
-                                <div class="swiper-slide">
-                                    <div class="hero-article-item" style="background-image: url('{{ asset('storage/app/private/'. ($article->image ?? 'default.png')) }}')">
-                                        <div class="hero-article-overlay"></div>
-                                        <div class="hero-article-info">
-                                            <p class="hero-label">{{ $article->Topic->name ?? 'IoT Insight' }}</p>
-                                            <h2 class="hero-title">{{ Str::limit($article->title, 50) }}</h2>
-                                            <div class="hero-article-meta">
-                                                <span class="views-badge"><i class="ci-eye me-1"></i>{{ number_format($article->views) }}</span>
-                                            </div>
-                                            <a href="{{ route('frontend.articles.article_topic_details', ['topicname_slug' => $article->Topic->slug, 'title_slug' => $article->slug]) }}" class="btn btn-sm btn-outline-light">
-                                                Read More <i class="ci-arrow-up-right ms-2"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                            <div class="swiper-pagination hero-pagination"></div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-            </div>
+            </form>
         </div>
     </section>
 
-    <!-- ============================================
-         NAVIGATION SECTIONS - Different Styles
-         ============================================ -->
-    <section class="container pt-4 mb-5">
-        <!-- Row 1: Article Types (Horizontal Tabs) -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <h3 class="section-title mb-4">
-                    <i class="ci-newspaper text-success me-2"></i>Browse by Content Type
-                </h3>
-                <div class="article-types-tabs">
-                    @foreach($article_types as $type)
-                    <a href="{{ route('frontend.articles.types', ['article_type_slug' => $type->slug]) }}" class="article-type-tab @if($loop->first)active @endif">
-                        <i class="ci-tag"></i>
-                        <span>{{ $type->name }}</span>
-                    </a>
-                    @endforeach
+    {{-- 2. LIVESHOW 3 THÀNH PHẦN (8:1 & 4:3) --}}
+    <section class="container mb-5">
+        <div class="swiper swiper-main-liveshow mb-3">
+            <div class="swiper-wrapper">
+                @foreach($tripletSlides as $slide)
+                <div class="swiper-slide">
+                    <div class="hero-banner-main-wrapper">
+                        <img src="{{ asset('public/images/'.$slide['banner']) }}" alt="System Banner">
+                    </div>
                 </div>
+                @endforeach
             </div>
         </div>
 
-        <!-- Row 2: Topics (Cards with Images) -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <h3 class="section-title mb-4">
-                    <i class="ci-folder text-info me-2"></i>Article Topics
-                </h3>
-                <div class="topics-cards-grid">
-                    @foreach($topics as $topic)
-                    <a href="{{ route('frontend.articles.topics', ['topicname_slug' => $topic->slug]) }}" class="topic-card-item" style="background-image: url('{{ asset('storage/app/private/'.$topic->image)}}')">
-                        <div class="topic-overlay"></div>
-                        <span class="topic-name">{{ $topic->name }}</span>
-                    </a>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
-        <!-- Row 3: Product Categories (Pills Carousel) -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <h3 class="section-title mb-4">
-                    <i class="ci-bag text-warning me-2"></i>Shop by Category
-                </h3>
-                <div class="categories-pills-wrapper">
-                    @foreach($categories as $category)
-                    <a href="{{ route('frontend.products.categories', ['categoryname_slug' => $category->slug]) }}" class="category-pill">
-                        <img src="{{ asset('storage/app/private/'.$category->image)}}" alt="{{ $category->name }}" />
-                        <span>{{ $category->name }}</span>
-                    </a>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
-        <!-- Row 4: Manufacturers (Grid) -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <h3 class="section-title mb-4">
-                    <i class="ci-building text-primary me-2"></i>Top Manufacturers
-                </h3>
-                <div class="manufacturers-grid-layout">
-                    @foreach($manufactures as $manufacturer)
-                    <a href="{{ route('frontend.products.manufacturers', ['manufacturer_slug' => $manufacturer->slug]) }}" class="manufacturer-grid-item">
-                        <div class="manufacturer-logo-wrapper">
-                            <img src="{{ asset('storage/app/private/'.$manufacturer->logo)}}" alt="{{ $manufacturer->name }}" />
-                        </div>
-                        <p class="manufacturer-grid-name">{{ $manufacturer->name }}</p>
-                    </a>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         FEATURED PRODUCTS BY CATEGORY
-         ============================================ -->
-    <section class="container pt-2 mt-2 mb-5">
-        @foreach($categories as $cate)
-        @if($cate->products->count() > 0)
-        <section class="category-section mb-5">
-            <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-4">
-                <div>
-                    <h2 class="h3 mb-0">{{ $cate->name }}</h2>
-                    <p class="text-muted small mb-0">{{ $cate->products->count() }} products available</p>
-                </div>
-                <a class="btn btn-outline-primary animate-underline" href="{{ route('frontend.products.categories', ['categoryname_slug' => $cate->slug])}}">
-                    View All <i class="ci-chevron-right ms-1"></i>
-                </a>
-            </div>
-
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
-                @foreach($cate->products->take(8) as $prod)
-                <div class="col">
-                    <div class="product-card animate-underline hover-effect-opacity bg-body rounded">
-                        <div class="position-relative">
-                            <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
-                                <div class="d-flex flex-column gap-2">
-                                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex">
-                                        <i class="ci-heart fs-base animate-target"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex">
-                                        <i class="ci-refresh-cw fs-base animate-target"></i>
-                                    </button>
+        <div class="swiper swiper-sub-content">
+            <div class="swiper-wrapper">
+                @foreach($tripletSlides as $slide)
+                <div class="swiper-slide">
+                    <div class="row g-3">
+                        {{-- Featured Product (4:3) --}}
+                        <div class="col-6">
+                            <a href="{{ route('frontend.products.product_category_details', ['categoryname_slug' => $slide['product']->category->slug, 'productname_slug' => $slide['product']->slug]) }}" class="text-decoration-none">
+                                <div class="hero-banner-sub-wrapper position-relative">
+                                    <img src="{{ asset('storage/app/private/'.optional($slide['product']->avatar)->url) }}" alt="Product">
+                                    <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-grad-dark text-white">
+                                        <small class="text-green-spring fw-bold">FEATURED PRODUCT</small>
+                                        <h5 class="mb-0 text-truncate">{{ $slide['product']->name }}</h5>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2">
-                                <button type="button" class="btn btn-icon btn-sm btn-secondary bg-body" data-bs-toggle="dropdown">
-                                    <i class="ci-more-vertical fs-lg"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end fs-xs p-2" style="min-width:auto">
-                                    <li><a class="dropdown-item" href="#"><i class="ci-heart fs-sm ms-n1 me-2"></i>Add to Favorites</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="ci-refresh-cw fs-sm ms-n1 me-2"></i>Compare</a></li>
-                                </ul>
-                            </div>
-
-                            <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="{{ route('frontend.products.product_category_details', ['categoryname_slug' => $cate->slug, 'productname_slug' => $prod->slug]) }}">
-                                <div class="ratio" style="--cz-aspect-ratio:calc(240 / 258 * 100%)">
-                                    <img src="{{ asset('storage/app/private/' . optional($prod->avatar)->url) }}" alt="{{ $prod->name }}" />
-                                </div>
-                                <span class="badge bg-info position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3">New</span>
                             </a>
                         </div>
-
-                        <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <div class="d-flex gap-1 fs-xs">
-                                    @for($i = 0; $i < 4; $i++)
-                                        <i class="ci-star-filled text-warning"></i>
-                                        @endfor
-                                        <i class="ci-star text-body-tertiary opacity-75"></i>
+                        {{-- Featured Article (4:3) --}}
+                        <div class="col-6">
+                            <a href="{{ route('frontend.articles.article_topic_details', ['topicname_slug' => $slide['article']->Topic->slug, 'title_slug' => $slide['article']->slug]) }}" class="text-decoration-none">
+                                <div class="hero-banner-sub-wrapper position-relative">
+                                    <img src="{{ asset('storage/app/private/'.$slide['article']->image) }}" alt="Article">
+                                    <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-grad-dark text-white">
+                                        <small class="text-info fw-bold">IOT INSIGHT</small>
+                                        <h5 class="mb-0 text-truncate">{{ $slide['article']->title }}</h5>
+                                    </div>
                                 </div>
-                                <span class="text-body-tertiary fs-xs">(42)</span>
-                            </div>
-                            <h3 class="pb-1 mb-2">
-                                <a class="d-block fs-sm fw-medium text-truncate" href="{{ route('frontend.products.product_category_details', ['categoryname_slug' => $cate->slug, 'productname_slug' => $prod->slug]) }}">
-                                    <span class="animate-target">{{ $prod->name }}</span>
-                                </a>
-                            </h3>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="h5 lh-1 mb-0">{{ number_format($prod->price, 0, ',', '.') }}<small>₫</small></div>
-                                <a href="{{ route('frontend.shoppingcard.add', ['productname_slug' => $prod->slug]) }}" class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2">
-                                    <i class="ci-shopping-cart fs-base animate-target"></i>
-                                </a>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
-        </section>
-        @endif
-        @endforeach
-    </section>
-
-    <!-- ============================================
-         SERVICES & FEATURES SECTION
-         ============================================ -->
-    <section class="container mb-5">
-        <h2 class="section-title text-center mb-5">
-            <i class="ci-star text-success me-2"></i>Why Choose Synwaveco
-        </h2>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="ci-rocket"></i>
-                    </div>
-                    <h4>Fast Shipping</h4>
-                    <p>Free shipping on orders over 500k. Quick delivery to your doorstep.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="ci-shield"></i>
-                    </div>
-                    <h4>Secure Payment</h4>
-                    <p>100% secure transactions with multiple payment methods available.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="ci-undo"></i>
-                    </div>
-                    <h4>Easy Returns</h4>
-                    <p>30-day money-back guarantee on all products. No questions asked.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="ci-headphones"></i>
-                    </div>
-                    <h4>24/7 Support</h4>
-                    <p>Expert customer support available anytime, anywhere. Chat with us now.</p>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- ============================================
-         PARTNERSHIP OPPORTUNITIES
-         ============================================ -->
+    {{-- 3. MANUFACTURERS (Layout cũ) --}}
     <section class="container mb-5">
-        <h2 class="section-title text-center mb-5">
-            <i class="ci-handshake text-success me-2"></i>Join Our Network
-        </h2>
-        <div class="row g-4">
-            <!-- Become a Seller -->
-            <div class="col-lg-6">
-                <div class="partnership-card-balanced seller-card-balanced">
-                    <div class="partnership-icon-badge seller-badge">
-                        <i class="ci-bag-check"></i>
-                    </div>
-                    <h3 class="partnership-title">Become a Seller</h3>
-                    <p class="partnership-desc">
-                        Join our growing network of sellers. Expand your business and reach thousands of customers.
-                    </p>
-                    <ul class="partnership-perks">
-                        <li><i class="ci-check"></i> Low commission rates</li>
-                        <li><i class="ci-check"></i> Free marketing support</li>
-                        <li><i class="ci-check"></i> Dedicated account manager</li>
-                        <li><i class="ci-check"></i> Flexible payment terms</li>
-                    </ul>
-                    <a href="{{ route('frontend.recruitment') }}" class="btn btn-primary btn-partnership w-100">
-                        Apply Now <i class="ci-arrow-right ms-2"></i>
-                    </a>
-                </div>
+        <div class="d-flex overflow-auto pb-3" data-simplebar>
+            @foreach($manufactures as $man)
+            <div class="me-4 flex-shrink-0" style="width: 120px;">
+                <img src="{{ asset('storage/app/private/'.$man->logo) }}" class="img-fluid grayscale hover-color" alt="{{ $man->name }}">
             </div>
-
-            <!-- Become a Shipper -->
-            <div class="col-lg-6">
-                <div class="partnership-card-balanced shipper-card-balanced">
-                    <div class="partnership-icon-badge shipper-badge">
-                        <i class="ci-truck"></i>
-                    </div>
-                    <h3 class="partnership-title">Become a Shipper</h3>
-                    <p class="partnership-desc">
-                        Partner with us for logistics. Earn competitive rates with flexible schedules.
-                    </p>
-                    <ul class="partnership-perks">
-                        <li><i class="ci-check"></i> Competitive compensation</li>
-                        <li><i class="ci-check"></i> Flexible work schedule</li>
-                        <li><i class="ci-check"></i> Real-time tracking system</li>
-                        <li><i class="ci-check"></i> Insurance coverage included</li>
-                    </ul>
-                    <a href="{{ route('frontend.recruitment') }}" class="btn btn-outline-primary btn-partnership w-100">
-                        Join Our Team <i class="ci-arrow-right ms-2"></i>
-                    </a>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
-    <!-- ============================================
-         NEWSLETTER SECTION
-         ============================================ -->
-    <section class="container mb-5">
-        <div class="newsletter-section">
-            <div class="newsletter-content">
-                <h3 class="text-white mb-2">Subscribe to Our Newsletter</h3>
-                <p class="text-white-50 mb-4">Get the latest IoT news, product launches, and exclusive offers.</p>
-                <form class="newsletter-form">
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Enter your email..." required>
-                        <button class="btn btn-primary" type="submit">Subscribe</button>
+    {{-- 4. CATEGORIES GRID (6x2 + Pagination) --}}
+    <section class="container mb-5 bg-white p-4 rounded-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="h4 fw-bold mb-0">Browse Categories</h3>
+            <div class="pagination-nav">{{ $categories->links('vendor.pagination.greentech') }}</div>
+        </div>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
+            @foreach($categories as $cate)
+            <div class="col category-grid-item">
+                <a href="{{ route('frontend.products.categories', $cate->slug) }}" class="text-center text-decoration-none d-block">
+                    <div class="category-img-box mx-auto shadow-sm">
+                        <img src="{{ asset('storage/app/private/'.$cate->image) }}" class="img-fluid" alt="{{ $cate->name }}">
                     </div>
-                </form>
+                    <span class="small fw-bold text-dark">{{ $cate->name }}</span>
+                </a>
+            </div>
+            @endforeach
+        </div>
+    </section>
+
+
+    <section class="container mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="h4 fw-bold mb-0"><i class="fas fa-newspaper me-2 text-primary"></i>Knowledge Hub</h3>
+            <div>{{ $articles->links('vendor.pagination.greentech') }}</div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            @foreach($articles as $art)
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm hover-top transition">
+                    <img src="{{ asset('storage/app/private/'.$art->image) }}" class="card-img-top" style="height: 160px; object-fit: cover;">
+                    <div class="card-body">
+                        <small class="text-primary fw-bold">{{ $art->Topic->name }}</small>
+                        <h6 class="mt-1">{{ Str::limit($art->title, 50) }}</h6>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </section>
+
+
+    {{-- 6. PRODUCTS LIST (Layout hiện tại) --}}
+    <section class="container mb-5">
+        <h3 class="h4 fw-bold mb-4">Latest IoT Solutions</h3>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+            @foreach($featuredProducts as $prod)
+            <div class="col">
+                <div class="product-card animate-underline hover-effect-opacity bg-body rounded">
+                    <div class="position-relative">
+                        <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
+                            <div class="d-flex flex-column gap-2">
+                                <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex">
+                                    <i class="ci-heart fs-base animate-target"></i>
+                                </button>
+                                <button type="button" class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex">
+                                    <i class="ci-refresh-cw fs-base animate-target"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2">
+                            <button type="button" class="btn btn-icon btn-sm btn-secondary bg-body" data-bs-toggle="dropdown">
+                                <i class="ci-more-vertical fs-lg"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end fs-xs p-2" style="min-width:auto">
+                                <li>
+                                    <a class="dropdown-item" href="#"><i class="ci-heart fs-sm ms-n1 me-2"></i> Thêm vào yêu thích</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"><i class="ci-refresh-cw fs-sm ms-n1 me-2"></i> So sánh</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="{{ route('frontend.products.product_category_details', ['categoryname_slug' => $cate->slug, 'productname_slug' => $prod->slug]) }}">
+                            <div class="ratio" style="--cz-aspect-ratio:calc(240 / 258 * 100%)">
+                                <img src="{{ asset('storage/app/private/' . optional($prod->avatar)->url) }}" />
+                            </div>
+                            <span class="badge bg-info position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3">New</span>
+                        </a>
+                    </div>
+                    <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <div class="d-flex gap-1 fs-xs">
+                                <i class="ci-star-filled text-warning"></i>
+                                <i class="ci-star-filled text-warning"></i>
+                                <i class="ci-star-filled text-warning"></i>
+                                <i class="ci-star-filled text-warning"></i>
+                                <i class="ci-star text-body-tertiary opacity-75"></i>
+                            </div>
+                            <span class="text-body-tertiary fs-xs"></span>
+                        </div>
+                        <h3 class="pb-1 mb-2">
+                            <a class="d-block fs-sm fw-medium text-truncate" href="{{ route('frontend.products.product_category_details', ['categoryname_slug' => $cate->slug, 'productname_slug' => $prod->slug]) }}">
+                                <span class="animate-target">{{ $prod->name }}</span>
+                            </a>
+                        </h3>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="h5 lh-1 mb-0">{{ number_format($prod->price, 0, ',', '.') }}<small>$</small></div>
+                            <a href="{{ route('frontend.shoppingcard.add', ['productname_slug' => $prod->slug]) }}" class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2">
+                                <i class="ci-shopping-cart fs-base animate-target"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </section>
+
+
+    <section class="container mb-5">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="cta-card text-center" style="background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);">
+                    <i class="fas fa-store fa-3x mb-3"></i>
+                    <h2>Open Your Store</h2>
+                    <p>Register as a Saler to reach thousands of smart farms.</p>
+                    <a href="{{ route('user.register') }}" class="btn btn-light rounded-pill px-5 fw-bold">JOIN NOW</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cta-card text-center" style="background: linear-gradient(135deg, #104e8b 0%, #1e90ff 100%);">
+                    <i class="fas fa-truck-loading fa-3x mb-3"></i>
+                    <h2>Become a Shipper</h2>
+                    <p>Help us deliver the future of IoT agriculture.</p>
+                    <a href="{{ route('user.register') }}" class="btn btn-light rounded-pill px-5 fw-bold">APPLY TODAY</a>
+                </div>
             </div>
         </div>
     </section>
 </main>
-
-<style>
-    /* ================================================
-   HERO SHOWCASE - IMPROVED BALANCED DESIGN
-   ================================================ */
-
-    .hero-showcase {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        border-radius: 0;
-        overflow: hidden;
-    }
-
-    .hero-products-section,
-    .hero-articles-section {
-        min-height: 500px;
-        display: flex;
-        align-items: stretch;
-        position: relative;
-    }
-
-    .hero-products-section {
-        background: linear-gradient(135deg, #ffffff 0%, #f0f5f0 100%);
-    }
-
-    .hero-articles-section {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e9 100%);
-    }
-
-    /* Product Item */
-    .hero-product-item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        position: relative;
-        padding: 2rem;
-    }
-
-    .hero-product-img {
-        max-width: 80%;
-        max-height: 80%;
-        object-fit: contain;
-        animation: fadeIn 0.8s ease-in-out;
-    }
-
-    .hero-product-info-card {
-        position: absolute;
-        bottom: 2rem;
-        left: 2rem;
-        right: 2rem;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0, 139, 69, 0.15);
-        animation: slideInUp 0.6s ease-out 0.3s both;
-    }
-
-    /* Article Item */
-    .hero-article-item {
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        display: flex;
-        position: relative;
-    }
-
-    .hero-article-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to top, rgba(0, 139, 69, 0.95) 0%, rgba(0, 139, 69, 0.6) 40%, transparent 100%);
-        z-index: 1;
-    }
-
-    .hero-article-info-card {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        color: white;
-        padding: 2rem;
-        z-index: 2;
-        animation: slideInUp 0.6s ease-out;
-    }
-
-    /* Labels and Titles */
-    .hero-label {
-        color: #00CD66;
-        font-size: 0.85rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 0.5rem;
-    }
-
-    .hero-title {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #008B45;
-        margin-bottom: 1rem;
-        line-height: 1.3;
-    }
-
-    .hero-article-info-card .hero-title {
-        color: white;
-        font-size: 1.4rem;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    }
-
-    .hero-price {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #3CB371;
-        margin-bottom: 1rem;
-    }
-
-    .hero-article-meta {
-        display: flex;
-        gap: 1rem;
-        margin: 1rem 0;
-    }
-
-    .views-badge {
-        background: rgba(0, 255, 127, 0.25);
-        color: #00FF7F;
-        padding: 0.4rem 0.9rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Pagination */
-    .hero-pagination {
-        position: absolute;
-        bottom: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        display: flex;
-        gap: 0.6rem;
-    }
-
-    .swiper-pagination-bullet {
-        width: 10px;
-        height: 10px;
-        background: rgba(255, 255, 255, 0.5);
-        opacity: 1;
-        margin: 0;
-        transition: all 0.3s ease;
-    }
-
-    .hero-products-section .swiper-pagination-bullet {
-        background: rgba(0, 139, 69, 0.4);
-    }
-
-    .hero-products-section .swiper-pagination-bullet-active {
-        background: #00CD66;
-        width: 28px;
-        border-radius: 6px;
-        box-shadow: 0 4px 12px rgba(0, 205, 102, 0.4);
-    }
-
-    .hero-articles-section .swiper-pagination-bullet-active {
-        background: #00FF7F;
-        width: 28px;
-        border-radius: 6px;
-        box-shadow: 0 4px 12px rgba(0, 255, 127, 0.4);
-    }
-
-    /* ================================================
-   NAVIGATION SECTIONS - DIFFERENT STYLES
-   ================================================ */
-
-    .section-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #008B45;
-        border-bottom: 3px solid #00CD66;
-        padding-bottom: 0.5rem;
-        display: inline-block;
-    }
-
-    /* Style 1: Article Types - Horizontal Tabs */
-    .article-types-tabs {
-        display: flex;
-        gap: 0.8rem;
-        overflow-x: auto;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #e0e0e0;
-    }
-
-    .article-type-tab {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.8rem 1.2rem;
-        background: white;
-        border: 2px solid #f0f0f0;
-        border-radius: 25px;
-        text-decoration: none;
-        color: #696969;
-        font-weight: 600;
-        white-space: nowrap;
-        transition: all 0.3s ease;
-    }
-
-    .article-type-tab:hover,
-    .article-type-tab.active {
-        background: #00CD66;
-        color: white;
-        border-color: #00CD66;
-        box-shadow: 0 4px 12px rgba(0, 205, 102, 0.3);
-        transform: translateY(-2px);
-    }
-
-    /* Style 2: Topics - Image Cards */
-    .topics-cards-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .topic-card-item {
-        position: relative;
-        height: 140px;
-        border-radius: 12px;
-        overflow: hidden;
-        text-decoration: none;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        background-size: cover;
-        background-position: center;
-        transition: all 0.3s ease;
-    }
-
-    .topic-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to top, rgba(0, 139, 69, 0.8) 0%, transparent 100%);
-        z-index: 1;
-        transition: all 0.3s ease;
-    }
-
-    .topic-card-item:hover .topic-overlay {
-        background: linear-gradient(to top, rgba(0, 139, 69, 0.95) 0%, rgba(0, 139, 69, 0.3) 100%);
-    }
-
-    .topic-name {
-        position: relative;
-        z-index: 2;
-        color: white;
-        font-weight: 600;
-        font-size: 0.95rem;
-        text-align: center;
-        padding: 1rem;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .topic-card-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 30px rgba(0, 139, 69, 0.25);
-    }
-
-    /* Style 3: Categories - Pills */
-    .categories-pills-wrapper {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        padding: 1rem;
-        background: linear-gradient(135deg, rgba(0, 205, 102, 0.05) 0%, rgba(0, 139, 69, 0.05) 100%);
-        border-radius: 12px;
-    }
-
-    .category-pill {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.7rem 1.2rem;
-        background: white;
-        border: 2px solid #e8f5e9;
-        border-radius: 25px;
-        text-decoration: none;
-        color: #008B45;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-        white-space: nowrap;
-    }
-
-    .category-pill img {
-        width: 20px;
-        height: 20px;
-        object-fit: contain;
-    }
-
-    .category-pill:hover {
-        background: #00CD66;
-        color: white;
-        border-color: #00CD66;
-        box-shadow: 0 6px 16px rgba(0, 205, 102, 0.25);
-        transform: scale(1.05);
-    }
-
-    /* Style 4: Manufacturers - Grid */
-    .manufacturers-grid-layout {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .manufacturer-grid-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem;
-        background: white;
-        border: 2px solid #f0f0f0;
-        border-radius: 12px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        min-height: 150px;
-    }
-
-    .manufacturer-logo-wrapper {
-        width: 70px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 0.8rem;
-    }
-
-    .manufacturer-logo-wrapper img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
-
-    .manufacturer-grid-name {
-        text-align: center;
-        font-weight: 600;
-        color: #008B45;
-        font-size: 0.85rem;
-        margin: 0;
-    }
-
-    .manufacturer-grid-item:hover {
-        border-color: #3CB371;
-        box-shadow: 0 10px 28px rgba(60, 179, 113, 0.2);
-        transform: translateY(-5px);
-    }
-
-    /* ================================================
-   PARTNERSHIP CARDS - BALANCED
-   ================================================ */
-
-    .partnership-card-balanced {
-        background: white;
-        border: 2px solid #f0f0f0;
-        border-radius: 12px;
-        padding: 2.5rem 2rem;
-        min-height: 450px;
-        display: flex;
-        flex-direction: column;
-        transition: all 0.3s ease;
-        position: relative;
-    }
-
-    .seller-card-balanced {
-        background: linear-gradient(135deg, rgba(0, 139, 69, 0.05) 0%, rgba(0, 205, 102, 0.02) 100%);
-    }
-
-    .shipper-card-balanced {
-        background: linear-gradient(135deg, rgba(30, 144, 255, 0.05) 0%, rgba(70, 130, 180, 0.02) 100%);
-    }
-
-    .partnership-card-balanced:hover {
-        border-color: #00CD66;
-        box-shadow: 0 15px 40px rgba(0, 139, 69, 0.15);
-        transform: translateY(-5px);
-    }
-
-    .partnership-icon-badge {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-        color: white;
-    }
-
-    .seller-badge {
-        background: #00CD66;
-        box-shadow: 0 6px 16px rgba(0, 205, 102, 0.3);
-    }
-
-    .shipper-badge {
-        background: #1E90FF;
-        box-shadow: 0 6px 16px rgba(30, 144, 255, 0.3);
-    }
-
-    .partnership-title {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #008B45;
-        margin-bottom: 0.8rem;
-    }
-
-    .shipper-card-balanced .partnership-title {
-        color: #1E90FF;
-    }
-
-    .partnership-desc {
-        color: #696969;
-        margin-bottom: 1.5rem;
-        line-height: 1.6;
-        font-size: 0.95rem;
-    }
-
-    .partnership-perks {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 1.5rem 0;
-        flex-grow: 1;
-    }
-
-    .partnership-perks li {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        margin-bottom: 0.8rem;
-        color: #696969;
-        font-size: 0.9rem;
-    }
-
-    .partnership-perks i {
-        color: #00CD66;
-        font-weight: bold;
-        font-size: 0.9rem;
-    }
-
-    .btn-partnership {
-        margin-top: auto;
-    }
-
-    /* ================================================
-   FEATURE CARDS
-   ================================================ */
-
-    .feature-card {
-        background: linear-gradient(135deg, rgba(0, 139, 69, 0.05) 0%, rgba(0, 205, 102, 0.05) 100%);
-        border: 2px solid #e8f5e9;
-        border-radius: 12px;
-        padding: 2rem;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-
-    .feature-card:hover {
-        border-color: #00CD66;
-        box-shadow: 0 12px 32px rgba(0, 139, 69, 0.15);
-        transform: translateY(-5px);
-    }
-
-    .feature-icon {
-        font-size: 2.5rem;
-        color: #00CD66;
-        margin-bottom: 1rem;
-    }
-
-    .feature-card h4 {
-        color: #008B45;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-
-    .feature-card p {
-        color: #696969;
-        font-size: 0.9rem;
-        margin: 0;
-    }
-
-    /* ================================================
-   ANIMATIONS
-   ================================================ */
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* ================================================
-   RESPONSIVE
-   ================================================ */
-
-    @media (max-width: 992px) {
-
-        .hero-products-section,
-        .hero-articles-section {
-            min-height: 400px;
-        }
-
-        .hero-product-info-card,
-        .hero-article-info-card {
-            padding: 1rem;
-        }
-
-        .hero-title {
-            font-size: 1.2rem;
-        }
-    }
-
-    @media (max-width: 768px) {
-
-        .hero-products-section,
-        .hero-articles-section {
-            min-height: 350px;
-        }
-
-        .hero-product-img {
-            max-width: 70%;
-        }
-
-        .topics-cards-grid {
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 1rem;
-        }
-
-        .article-types-tabs {
-            gap: 0.5rem;
-        }
-
-        .article-type-tab {
-            padding: 0.6rem 1rem;
-            font-size: 0.85rem;
-        }
-
-        .partnership-card-balanced {
-            min-height: auto;
-            padding: 1.5rem;
-        }
-    }
-</style>
-
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainBannerSwiper = new Swiper('.swiper-main-liveshow', {
+            loop: true,
+            speed: 800,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            }
+        });
+
+        const subContentSwiper = new Swiper('.swiper-sub-content', {
+            loop: true,
+            speed: 800,
+            allowTouchMove: false,
+            spaceBetween: 30
+        });
+
+        mainBannerSwiper.controller.control = subContentSwiper;
+        subContentSwiper.controller.control = mainBannerSwiper;
+    });
+</script>

@@ -22,7 +22,7 @@
 
             {{-- Navigation Links --}}
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto gap-2">
+                <ul class="navbar-nav me-auto gap-2">
                     {{-- HOME --}}
                     <li class="nav-item">
                         <a class="nav-link fw-500 {{ Route::is('frontend.home') ? 'active' : '' }}"
@@ -156,9 +156,11 @@
                             <i class="fas fa-user-plus me-2"></i>Register
                         </a>
                     </li>
-
                     {{-- AUTHENTICATED USER MENU --}}
                     @else
+                </ul>
+
+                <ul class="navbar-nav ms-auto gap-2">
                     <li class="nav-item ms-lg-3 border-start-lg ps-lg-3">
                         <a class="nav-link fw-500" href="{{ route('frontend.shoppingcard') }}">
                             <i class="fas fa-shopping-cart me-2"></i>
@@ -167,8 +169,7 @@
                             <span class="badge bg-danger ms-1">{{ Cart::count() }}</span>
                             @endif
                         </a>
-                    </li>
-
+                    </li> 
                     {{-- USER DROPDOWN --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fw-600 text-primary" href="#" role="button"
@@ -177,15 +178,9 @@
                             <span class="badge badge-role ms-2">
                                 {{ Auth::user()->name }}
                             </span>
-
-                            <!--@if(Auth::user()->role)
-                            <span class="badge badge-role ms-2">
-                                <i class="fas fa-shield-alt me-1"></i>{{ Auth::user()->role->name }}
-                            </span>
-                            @endif-->
                         </a>
-
-                        <ul class="dropdown-menu dropdown-menu-end">
+                    
+                        <ul class="dropdown-menu ms-auto dropdown-menu-end">
                             <li>
                                 @php
                                 $homeRoute = 'frontend.home';
