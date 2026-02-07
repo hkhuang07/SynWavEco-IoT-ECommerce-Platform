@@ -3,7 +3,7 @@
 
 @section('content')
 <main class="content-wrapper">
-    
+
     <section class="container pt-3 mb-4">
         <div class="row">
             <div class="col-12">
@@ -19,7 +19,7 @@
 
                                 <div class="swiper-wrapper">
                                     {{-- Đổi Featured Products thành Featured Articles --}}
-                                    @foreach($articles->take(5) as $art) 
+                                    @foreach($articles->take(5) as $art)
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <p class="text-body">{{ $art->Topic->name ?? 'IoT Insight' }}</p>
 
@@ -42,7 +42,7 @@
                                     @foreach($articles->take(5) as $art)
                                     <div class="swiper-slide d-flex justify-content-end">
                                         <div class="ratio rtl-flip" style="max-width:495px; --cz-aspect-ratio:calc(537 / 495 * 100%)">
-                                            <img src="{{ asset('storage/app/private/'. ($art->image ?? 'default.png')) }}" alt="{{ $art->title }}" class="rounded-5 shadow" style="object-fit: cover;"/>
+                                            <img src="{{ asset('storage/app/private/'. ($art->image ?? 'default.png')) }}" alt="{{ $art->title }}" class="rounded-5 shadow" style="object-fit: cover;" />
                                         </div>
                                     </div>
                                     @endforeach
@@ -64,27 +64,42 @@
     </section>
 
     <section class="container mb-5">
+        <div class="overflow-auto" data-simplebar data-simplebar-auto-hide="false">
+            <div class="d-flex flex-nowrap align-items-center" style="min-width: max-content; ">
+                @foreach($topics as $value )
+                <div style="width: 160px; flex-shrink: 0;">
+                    <a class="d-flex justify-content-center py-3 px-2 px-xl-3" href="{{ route('frontend.articles.topics', ['topicname_slug' => $value->slug]) }}">
+                        <img src="{{ asset('storage/app/private/'.$value->image)}}" class="d-block d-none-dark" alt="{{ $value->name }}" style="max-height: 60px;" />
+                        <img src="{{ asset('storage/app/private/'.$value->image) }}" class="d-none d-block-dark" alt="{{ $value->name }}" style="max-height: 60px;" />
+                    </a>
+                    <span class="d-block text-center text-truncate mt-2">{{ $value->name }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
         <h5 class="mb-3 text-muted small text-uppercase fw-bold">Explore Content Types</h5>
         <div class="overflow-auto" data-simplebar data-simplebar-auto-hide="false">
             <div class="d-flex flex-nowrap align-items-center gap-3" style="min-width: max-content;">
                 @foreach($article_types as $type)
                 <div style="flex-shrink: 0;">
-                    <a class="btn btn-outline-secondary rounded-pill px-4 py-2" 
-                       href="{{ route('frontend.articles.types', ['article_type_slug' => $type->slug]) }}">
+                    <a class="btn btn-outline-secondary rounded-pill px-4 py-2"
+                        href="{{ route('frontend.articles.types', ['article_type_slug' => $type->slug]) }}">
                         <i class="fas fa-layer-group me-2"></i>{{ $type->name }}
                     </a>
                 </div>
                 @endforeach
             </div>
         </div>
+
+
     </section>
 
     @foreach($topics as $topic)
-    @php 
-        // Lấy bài viết thuộc topic hiện tại
-        $topicArticles = $articles->where('topicid', $topic->id)->take(4); 
+    @php
+    // Lấy bài viết thuộc topic hiện tại
+    $topicArticles = $articles->where('topicid', $topic->id)->take(4);
     @endphp
-    
+
     @if($topicArticles->count() > 0)
     <section class="container pt-2 mt-2 mb-5">
         {{-- Heading của Topic --}}
@@ -115,7 +130,7 @@
                         {{-- Hình ảnh bài viết --}}
                         <a class="d-block rounded-top overflow-hidden p-0" href="{{ route('frontend.articles.article_topic_details', ['topicname_slug' => $topic->slug, 'title_slug' => $art->slug]) }}">
                             <div class="ratio" style="--cz-aspect-ratio:calc(240 / 300 * 100%)">
-                                <img src="{{ asset('storage/app/private/' . $art->image) }}" class="img-fluid" alt="{{ $art->title }}" style="object-fit: cover;"/>
+                                <img src="{{ asset('storage/app/private/' . $art->image) }}" class="img-fluid" alt="{{ $art->title }}" style="object-fit: cover;" />
                             </div>
                             {{-- Badge loại bài viết --}}
                             <span class="badge bg-info position-absolute top-0 start-0 mt-2 ms-2">{{ $art->ArticleType->name ?? 'IoT' }}</span>
@@ -139,12 +154,12 @@
                         <div class="d-flex align-items-center justify-content-between mt-3">
                             {{-- Thay giá bằng Views --}}
                             <div class="h6 mb-0 text-primary">
-                                <i class="fas fa-eye me-1 small"></i>{{ number_format($art->views) }} 
+                                <i class="fas fa-eye me-1 small"></i>{{ number_format($art->views) }}
                                 <small class="text-muted" style="font-size: 0.6rem">VIEWS</small>
                             </div>
                             {{-- Nút đọc ngay (Dùng lại class product-card-button) --}}
-                            <a href="{{ route('frontend.articles.article_topic_details', ['topicname_slug' => $topic->slug, 'title_slug' => $art->slug]) }}" 
-                               class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2">
+                            <a href="{{ route('frontend.articles.article_topic_details', ['topicname_slug' => $topic->slug, 'title_slug' => $art->slug]) }}"
+                                class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2">
                                 <i class="fas fa-arrow-right fs-base animate-target"></i>
                             </a>
                         </div>
