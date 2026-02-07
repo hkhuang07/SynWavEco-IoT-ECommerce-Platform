@@ -167,7 +167,7 @@ The **SynWaveEco** logo embodies three interconnected elements:
 ## 📁 Project Structure
 
 ```
-D:\Study\E-commerce\Project\
+workspace\
 ├── src/                          # Source code directory
 │   ├── app/                      # Laravel application logic
 │   ├── routes/                   # API & web routes
